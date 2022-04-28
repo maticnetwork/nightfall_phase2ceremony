@@ -1,0 +1,17 @@
+{
+  "name": "mpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "ceremony": "node ceremony.js",
+    "contribute": "node contribution.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "download": "^8.0.0"
+  }
+}
