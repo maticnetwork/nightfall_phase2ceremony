@@ -22,3 +22,6 @@ with the next contribution. You can copy your contribution to [https://drive.goo
 
 We will post your contribution in this repository. You can verify that the contribution we post matches the `b2sum` hash in params/out/xxx.b2sum.
 
+## Requirements
+We use `b2sum`. Please install it if you don't have it installed on your system.
+
