@@ -4,7 +4,7 @@ echo "What is your name?"
 read NAME
 NAME=$(echo "${NAME}" | tr -d '[:space:]')
 
-echo "NO ONE EXPECTS THE... Entropy source I'm asking you:"
+echo "Enter your random private input:"
 read ENTROPY
 
 echo "Thanks, hang on a bit!"
