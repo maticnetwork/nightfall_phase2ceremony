@@ -18,7 +18,7 @@ When asked for a random input, you may use one of the following sources of entro
 - Randomly mashing keys on the keyboard
 
 After finishing, you should have your new mpc params in `./nightfall.phase2.contrib.${NAME}.tgz`. Please, send this file to us so that we can continue
-with the next contribution. You can copy your contribution at [https://drive.google.com/drive/folders/1nCq2y4b2v0uZu_T9DA0Zb2dQuprcnDbc?usp=sharing](https://drive.google.com/drive/folders/1nCq2y4b2v0uZu_T9DA0Zb2dQuprcnDbc?usp=sharing)
+with the next contribution. You can copy your contribution to [https://drive.google.com/drive/folders/1nCq2y4b2v0uZu_T9DA0Zb2dQuprcnDbc?usp=sharing](https://drive.google.com/drive/folders/1nCq2y4b2v0uZu_T9DA0Zb2dQuprcnDbc?usp=sharing)
 
 We will post your contribution in this repository. You can verify that the contribution we post matches the `b2sum` hash in params/out/xxx.b2sum.
 
