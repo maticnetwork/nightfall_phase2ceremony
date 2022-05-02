@@ -37,3 +37,6 @@ cd nightfall_phase2ceremony/mpc
 ## Requirements
 We use `b2sum`. Please install it if you don't have it installed on your system.
 
+## Other stuff
+
+```ceremony```, ```verification``` and ```beacon``` files are to be used internally in order to start, verify and apply random beacon

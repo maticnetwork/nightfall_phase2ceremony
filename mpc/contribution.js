@@ -1,8 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import childProcess from 'child_process';
-import fs from 'fs';
-
-import download from 'download';
+import { circuits } from './utils/constants.js';
+import { log, prepareContribution, initFolders } from './utils/index.js';
 
 const { spawn } = childProcess;
 
@@ -19,13 +18,7 @@ async function contribution(circuitName, random) {
       random,
     ]);
 
-    zokrates.stderr.on('data', err => {
-      reject(new Error(`Setup failed: ${err}`));
-    });
-
-    zokrates.on('close', () => {
-      resolve();
-    });
+    log(zokrates, resolve, reject)
   });
 }
 
@@ -34,15 +27,12 @@ const main = async () => {
     if (!process.env.ENTROPY) throw new Error('Please provide source of randomness');
     if (!process.env.NAME) throw new Error('What is... your name? What is... your quest?');
 
-    if (!fs.existsSync('./params')) fs.mkdirSync('./params');
-    if (!fs.existsSync('./params/out')) fs.mkdirSync('./params/out');
 
-    for (const circuit of ['deposit', 'double_transfer', 'single_transfer', 'withdraw']) {
+    await initFolders();
+
+    for (const circuit of circuits) {
       console.log(`Generating contribution for ${circuit}...`);
-      if (!fs.existsSync(`./params/${circuit}`)) {
-        console.log("Downloading params...");
-        await download(`${process.env.MPC_PARAMS_URL}/${circuit}`, `./params`);
-      }
+      await prepareContribution(circuit);
       await contribution(circuit, process.env.ENTROPY);
     }
   } catch (err) {

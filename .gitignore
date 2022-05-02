@@ -2,3 +2,6 @@
 mpc/params/*
 mpc/radix/*
 mpc/circuits/*
+.env
+node_modules
+compiled_circuits
