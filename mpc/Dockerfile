@@ -16,9 +16,11 @@ RUN apt-get install -y nodejs gcc g++ make
 
 ARG NAME
 ARG ENTROPY
+ARG SCRIPT
 
 ENV NAME=$NAME
 ENV ENTROPY=$ENTROPY
+ENV SCRIPT=$SCRIPT
 ENV MPC_PARAMS_URL=https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params
 ENV RADIX_FILES_URL=https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/radix
 
@@ -27,4 +29,4 @@ ENV ZOKRATES_STDLIB /app/stdlib
 
 RUN npm ci
 
-CMD npm run contribute 
+CMD npm run $SCRIPT

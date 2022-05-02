@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "ceremony": "node ceremony.js",
-    "contribute": "node contribution.js"
+    "contribute": "node contribution.js",
+    "verify": "node verify.js"
   },
   "author": "",
   "license": "ISC",

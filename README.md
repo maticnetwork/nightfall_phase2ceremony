@@ -1,4 +1,6 @@
 # Nightfall MPC ceremony (phase 2)
+
+## Contribute
 We use phase1 from the perpetual powers of tau. This phase2 is circuit-specific.
 
 To contribute to Nightfall phase 2 ceremony:
@@ -21,6 +23,16 @@ After finishing, you should have your new mpc params in `./nightfall.phase2.cont
 with the next contribution. 
 
 We will post your contribution in this repository. You can verify that the contribution we post matches the `b2sum` hash in params/out/xxx.b2sum.
+
+## Verify
+Verify contributions. You will need to retrieve a copy of the compiled circuits and copy them in `./circuits` as `deposit`, `single_transfer`, `double_transfer`, `withdraw`.
+
+To perform verification, 
+```
+cd nightfall_phase2ceremony/mpc
+./mpc_verify.sh
+```
+
 
 ## Requirements
 We use `b2sum`. Please install it if you don't have it installed on your system.

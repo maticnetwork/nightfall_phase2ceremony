@@ -1,2 +1,4 @@
 *.tgz
 mpc/params/*
+mpc/radix/*
+mpc/circuits/*

@@ -28,7 +28,7 @@ echo "Double transfer param file downloaded..."
 curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params/withdraw --output params/withdraw 2> /dev/null
 echo "Withdraw param file downloaded..."
 
-docker build -t contribute --build-arg NAME="${NAME}" --build-arg ENTROPY="${ENTROPY}" .
+docker build -t contribute --build-arg SCRIPT=contribute --build-arg NAME="${NAME}" --build-arg ENTROPY="${ENTROPY}" .
 docker run --name contribution_container contribute
 docker cp contribution_container:/app/params/out ./params
 docker rm -f contribution_container
