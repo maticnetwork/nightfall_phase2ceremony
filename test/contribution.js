@@ -10,22 +10,30 @@ import verify from '../src/verify.js';
 
 chai.use(chaiAsPromised);
 
-const { MPC_PARAMS_URL, RADIX_FILES_URL } = config;
+const { MPC_PARAMS_URL, RADIX_FILES_URL, CIRCUIT_FILES_URL } = config;
 process.env.WORKDIR = '';
 
 before(async () => {
-  if (!fs.existsSync(`./circuits`)) throw new Error('No circuits were found');
+  // removing existing circuits
+  if (fs.existsSync(`./circuits`)) fs.rmSync('./circuits', { recursive: true });
+  fs.mkdirSync('./circuits');
 
+  console.log('Downloading circuits...');
+  const circuitsUrl = circuits.map(c => `${CIRCUIT_FILES_URL}/${c}_out`);
+  await Promise.all(circuitsUrl.map(url => download(url, './circuits')));
+
+  // removing existent params
   if (fs.existsSync('./params')) fs.rmSync('./params', { recursive: true });
   fs.mkdirSync('./params');
   if (!fs.existsSync('./params/out')) fs.mkdirSync('./params/out');
 
-  if (fs.existsSync('./radix')) fs.rmSync('./radix', { recursive: true });
-  fs.mkdirSync('./radix');
-
   console.log('Downloading params...');
   const paramsUrl = circuits.map(c => `${MPC_PARAMS_URL}/${c}`);
   await Promise.all(paramsUrl.map(url => download(url, './params')));
+
+  // removing existent radix files
+  if (fs.existsSync('./radix')) fs.rmSync('./radix', { recursive: true });
+  fs.mkdirSync('./radix');
 
   console.log('Downloading radix...');
   const radixUrl = circuits.map(c => `${RADIX_FILES_URL}/${c}`);

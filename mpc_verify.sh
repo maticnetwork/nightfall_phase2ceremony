@@ -45,6 +45,25 @@ if [ ! -f ./radix/withdraw ]; then
   echo "Withdraw param radix downloaded..."
 fi
 
+
+echo "Downloading compiled circuits files..."
+if [ ! -f ./circuits/deposit ]; then
+  curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/compiled_circuits/deposit_out --output circuits/deposit_out 2> /dev/null
+  echo "Deposit param file downloaded..."
+fi
+if [ ! -f ./circuits/single_transfer ]; then
+  curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/compiled_circuits/single_transfer_out --output circuits/single_transfer_out 2> /dev/null
+  echo "Single transfer param file downloaded..."
+fi
+if [ ! -f ./circuits/double_transfer ]; then
+  curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/compiled_circuits/double_transfer_out --output circuits/double_transfer_out 2> /dev/null
+  echo "Double transfer param file downloaded..."
+fi
+if [ ! -f ./circuits/withdraw ]; then
+  curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/compiled_circuits/withdraw_out --output circuits/withdraw_out 2> /dev/null
+  echo "Withdraw param file downloaded..."
+fi
+
 docker build  --build-arg SCRIPT=verify  -t verify .
 docker run --name verify_container verify 
 docker cp verify_container:/app/params/verify ./params
