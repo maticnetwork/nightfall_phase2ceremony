@@ -16,11 +16,15 @@ RUN apt-get install -y nodejs gcc g++ make
 
 ARG NAME
 ARG ENTROPY
+ARG ITERATIONS
 ARG SCRIPT
 
 ENV NAME=$NAME
 ENV ENTROPY=$ENTROPY
+ENV ITERATIONS=$ITERATIONS
 ENV SCRIPT=$SCRIPT
+ENV WORKDIR=/app/
+
 ENV MPC_PARAMS_URL=https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params
 ENV RADIX_FILES_URL=https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/radix
 

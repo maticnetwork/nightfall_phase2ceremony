@@ -5,6 +5,7 @@ if ! docker --version; then
     sh get-docker.sh
 fi
 
+mkdir -p ./params
 mkdir -p ./params/verify
 mkdir -p ./radix
 
@@ -48,3 +49,5 @@ docker build  --build-arg SCRIPT=verify  -t verify .
 docker run --name verify_container verify 
 docker cp verify_container:/app/params/verify ./params
 docker rm -f verify_container
+
+rm -rf ./params ./radix

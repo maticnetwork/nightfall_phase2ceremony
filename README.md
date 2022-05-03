@@ -33,6 +33,10 @@ cd nightfall_phase2ceremony/mpc
 ./mpc_verify.sh
 ```
 
+## Testing
+
+To test, just run `npm t` on the root folder.
+
 
 ## Requirements
 We use `b2sum`. Please install it if you don't have it installed on your system.

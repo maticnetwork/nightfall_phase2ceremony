@@ -1,7 +1,6 @@
 *.tgz
-mpc/params/*
-mpc/radix/*
-mpc/circuits/*
+params
+radix
+circuits
 .env
 node_modules
-compiled_circuits
