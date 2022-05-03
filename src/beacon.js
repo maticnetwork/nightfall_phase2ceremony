@@ -1,11 +1,12 @@
 import childProcess from 'child_process';
 
-import circuits from '../utils/constants.js';
+import config from 'config';
 import log from '../utils/index.js';
 
+const { circuits } = config;
 const { spawn } = childProcess;
 
-const beacon = async () => {
+export async function beacon() {
   try {
     if (!process.env.ENTROPY) throw new Error('Please provide source of randomness');
     if (!process.env.ITERATIONS) throw new Error('Please provide number of iterations');
@@ -13,13 +14,13 @@ const beacon = async () => {
     for (const circuit of circuits) {
       console.log(`Generating beacon for ${circuit}...`);
       await new Promise((resolve, reject) => {
-        const zokrates = spawn(`${process.env.WORKDIR}zokrates`, [
+        const zokrates = spawn('zokrates', [
           'mpc',
           'beacon',
           '-i',
-          `./params/${circuit}`,
+          `params/${circuit}`,
           `-o`,
-          `./params/out/${circuit}`,
+          `params/out/${circuit}`,
           '-h',
           process.env.ENTROPY,
           '-n',
@@ -32,6 +33,4 @@ const beacon = async () => {
   } catch (err) {
     throw new Error(err);
   }
-};
-
-export default beacon;
+}

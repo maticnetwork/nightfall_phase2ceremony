@@ -3,15 +3,16 @@ import chaiAsPromised from 'chai-as-promised';
 import download from 'download';
 import fs from 'fs';
 import config from 'config';
-import circuits from '../utils/constants.js';
-import contribute from '../src/contribution.js';
-import beacon from '../src/beacon.js';
-import verify from '../src/verify.js';
+import { contribute } from '../src/contribution.js';
+import { beacon } from '../src/beacon.js';
+import { verify } from '../src/verify.js';
 
 chai.use(chaiAsPromised);
 
-const { MPC_PARAMS_URL, RADIX_FILES_URL, CIRCUIT_FILES_URL } = config;
-process.env.WORKDIR = '';
+const {
+  urls: { MPC_PARAMS_URL, RADIX_FILES_URL, CIRCUIT_FILES_URL },
+  circuits,
+} = config;
 
 before(async () => {
   // removing existing circuits
@@ -80,6 +81,7 @@ describe('Verification test', () => {
 });
 
 after(() => {
+  fs.rmSync('./circuits', { recursive: true });
   fs.rmSync('./params', { recursive: true });
   fs.rmSync('./radix', { recursive: true });
 });

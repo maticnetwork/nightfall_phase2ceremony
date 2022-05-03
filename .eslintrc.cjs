@@ -10,6 +10,7 @@ module.exports = {
     'no-await-in-loop': 'off',
     'no-unused-expressions': 'off',
     '@babel/no-unused-expressions': 'off',
+    'import/prefer-default-export': 'off',
   },
   parserOptions: {
     ecmaFeatures: {

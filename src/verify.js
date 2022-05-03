@@ -1,23 +1,25 @@
 import childProcess from 'child_process';
-import circuits from '../utils/constants.js';
+import config from 'config';
 import log from '../utils/index.js';
+
+const { circuits } = config;
 
 const { spawn } = childProcess;
 
-const verify = async () => {
+export async function verify() {
   try {
     for (const circuit of circuits) {
       console.log(`Verifying contributions for circuit ${circuit}...`);
       await new Promise((resolve, reject) => {
-        const zokrates = spawn(`${process.env.WORKDIR}zokrates`, [
+        const zokrates = spawn('zokrates', [
           'mpc',
           'verify',
           '-i',
-          `./params/${circuit}`,
+          `params/${circuit}`,
           '-c',
-          `./circuits/${circuit}_out`,
+          `circuits/${circuit}_out`,
           '-r',
-          `./radix/${circuit}`,
+          `radix/${circuit}`,
         ]);
 
         log(zokrates, resolve, reject);
@@ -26,6 +28,4 @@ const verify = async () => {
   } catch (err) {
     throw new Error(err);
   }
-};
-
-export default verify;
+}

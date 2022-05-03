@@ -1,7 +1,9 @@
 import childProcess from 'child_process';
 
-import circuits from '../utils/constants.js';
+import config from 'config';
 import log from '../utils/index.js';
+
+const { circuits } = config;
 
 const { spawn } = childProcess;
 
@@ -11,11 +13,11 @@ async function ceremony(circuitName) {
       'mpc',
       'init',
       '-i',
-      `./circuits/${circuitName}_out`,
+      `circuits/${circuitName}_out`,
       '-o',
-      `./params/${circuitName}`,
+      `params/${circuitName}`,
       '-r',
-      `./radix/${circuitName}`,
+      `radix/${circuitName}`,
     ]);
 
     log(zokrates, resolve, reject);
