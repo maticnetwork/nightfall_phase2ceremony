@@ -1,2 +1,6 @@
 *.tgz
-mpc/params/*
+params
+radix
+circuits
+.env
+node_modules

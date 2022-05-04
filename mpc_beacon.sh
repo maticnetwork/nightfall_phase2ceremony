@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "What is your name?"
-read NAME
-NAME=$(echo "${NAME}" | tr -d '[:space:]')
-
-echo "Enter your random private input:"
+echo "Enter source of randomness:"
 read ENTROPY
+ENTROPY=$(echo "${ENTROPY}" | tr -d '[:space:]')
+
+echo "Enter number of iterations:"
+read ITERATIONS
 
 echo "Thanks, hang on a bit!"
 
@@ -15,6 +15,7 @@ if ! docker --version; then
 fi
 
 rm -rf ./params
+rm -rf ./radix
 mkdir -p ./params
 mkdir -p ./params/out
 
@@ -28,10 +29,10 @@ echo "Double transfer param file downloaded..."
 curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params/withdraw --output params/withdraw 2> /dev/null
 echo "Withdraw param file downloaded..."
 
-docker build -t contribute --build-arg NAME="${NAME}" --build-arg ENTROPY="${ENTROPY}" .
-docker run --name contribution_container contribute
-docker cp contribution_container:/app/params/out ./params
-docker rm -f contribution_container
+docker build -t apply_beacon --build-arg SCRIPT=beacon --build-arg ITERATIONS="${ITERATIONS}" --build-arg ENTROPY="${ENTROPY}" .
+docker run --name apply_beacon_container apply_beacon
+docker cp apply_beacon_container:/app/params/out ./params
+docker rm -f apply_beacon_container
 
 sleep 10
 cd params 
@@ -46,7 +47,8 @@ b2sum single_transfer > single_transfer.b2sum
 b2sum withdraw > withdraw.b2sum
 cd ../../
 current_time=$(date "+%Y.%m.%d-%H.%M.%S")
-contribution=nightfall.phase2.contrib."${NAME}".${current_time}.tgz
-tar -cvzf ${contribution} params/out
+beacon=nightfall.phase2.beacon."${NAME}".${current_time}.tgz
+tar -cvzf ${beacon} params/out
+rm -rf ./params ./radix
 
-echo "Thank you so much for your contribution to Polygon Nightfall phase2! Please send back the param file ${contribution}" 
+echo "Beacon applied" 
