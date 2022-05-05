@@ -29,4 +29,6 @@ COPY --from=builder /app/ZoKrates/target/release/zokrates /zokrates
 RUN npm ci
 ENV PATH=$PATH:/
 
+RUN mkdir params/out
+
 CMD npm run $SCRIPT

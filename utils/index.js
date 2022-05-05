@@ -1,4 +1,6 @@
-const log = async (zokrates, resolve, reject) => {
+import fs from 'fs';
+
+const log = async (zokrates, resolve, reject, circuit) => {
   let output = '';
 
   zokrates.stdout.on('data', data => {
@@ -17,6 +19,9 @@ const log = async (zokrates, resolve, reject) => {
     if (output.includes('panicked')) {
       reject(new Error(output.slice(output.indexOf('panicked'))));
     }
+    if (!fs.existsSync('log')) fs.mkdirSync('log');
+
+    if (circuit) fs.writeFileSync(`log/${circuit}`, output);
     resolve(output);
     return output;
   });

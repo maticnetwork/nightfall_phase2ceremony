@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "ceremony": "node src/ceremony.js",
+    "ceremony": "run-func src/ceremony.js ceremony",
     "contribute": "run-func src/contribution.js contribute",
     "verify": "run-func src/verify.js verify",
     "beacon": "run-func src/beacon.js beacon",
-    "test": "mocha --timeout 0 test/*  ",
+    "test": "mocha --timeout 0 test/index.js",
     "lint": "eslint . --ext js,mjs,jsx,ts,tsx"
   },
   "author": "",
