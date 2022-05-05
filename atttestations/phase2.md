@@ -13,7 +13,7 @@ This phase2 was run on 4 circuits:
 This ceremony was run by 3 trusted individuals from the community:
 
 - Darko
-- [Baylina](https://keybase.io/jbaylina)
+- Baylina
 - Brody
 
 <!-- After the contributions, the b2sum of the param files resulting from the last contributions are:
