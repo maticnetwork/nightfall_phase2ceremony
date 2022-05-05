@@ -14,6 +14,8 @@ if ! docker --version; then
     sh get-docker.sh
 fi
 
+mkdir -p out/b2sum
+
 docker build -t contribute --build-arg SCRIPT=contribute --build-arg NAME="${NAME}" --build-arg ENTROPY="${ENTROPY}" .
 docker run --name contribution_container contribute
 docker cp contribution_container:/app/params/out ./out/params
