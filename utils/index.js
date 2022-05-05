@@ -21,7 +21,7 @@ const log = async (zokrates, resolve, reject, circuit) => {
     }
     if (!fs.existsSync('log')) fs.mkdirSync('log');
 
-    if (circuit) fs.writeFileSync(`log/${circuit}`, output);
+    if (circuit) fs.writeFileSync(`./log/${circuit}`, output);
     resolve(output);
     return output;
   });

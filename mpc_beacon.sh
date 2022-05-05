@@ -14,7 +14,7 @@ if ! docker --version; then
     sh get-docker.sh
 fi
 
-mkdir -p out
+mkdir -p out/b2sum
 
 docker build -t apply_beacon --build-arg SCRIPT=beacon --build-arg ITERATIONS="${ITERATIONS}" --build-arg ENTROPY="${ENTROPY}" .
 docker run --name apply_beacon_container apply_beacon
