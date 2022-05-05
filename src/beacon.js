@@ -27,7 +27,7 @@ export async function beacon() {
           process.env.ITERATIONS,
         ]);
 
-        log(zokrates, resolve, reject);
+        log(zokrates, resolve, reject, circuit);
       });
     }
   } catch (err) {

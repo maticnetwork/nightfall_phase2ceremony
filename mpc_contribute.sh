@@ -14,21 +14,6 @@ if ! docker --version; then
     sh get-docker.sh
 fi
 
-rm -rf ./params
-mkdir -p ./params
-mkdir -p ./out
-mkdir -p ./out/b2sum
-
-echo "Downloading param files..."
-curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params/deposit --output params/deposit 2> /dev/null
-echo "Deposit param file downloaded..."
-curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params/single_transfer --output params/single_transfer 2> /dev/null
-echo "Single transfer param file downloaded..."
-curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params/double_transfer --output params/double_transfer 2> /dev/null
-echo "Double transfer param file downloaded..."
-curl https://nightfallv3-proving-files.s3.eu-west-1.amazonaws.com/phase2/mpc_params/withdraw --output params/withdraw 2> /dev/null
-echo "Withdraw param file downloaded..."
-
 docker build -t contribute --build-arg SCRIPT=contribute --build-arg NAME="${NAME}" --build-arg ENTROPY="${ENTROPY}" .
 docker run --name contribution_container contribute
 docker cp contribution_container:/app/params/out ./out/params
