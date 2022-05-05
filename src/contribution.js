@@ -26,7 +26,7 @@ export async function contribute() {
           process.env.ENTROPY,
         ]);
 
-        log(zokrates, resolve, reject);
+        log(zokrates, resolve, reject, circuit);
       });
     }
   } catch (err) {
