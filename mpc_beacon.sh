@@ -31,6 +31,6 @@ b2sum withdraw > ../b2sum/withdraw.b2sum
 cd ../../
 current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 beacon=nightfall.phase2.beacon."${NAME}".${current_time}.tgz
-tar -cvzf ${beacon} params/out
+tar -cvzf ${beacon} out
 
 echo "Beacon applied" 
