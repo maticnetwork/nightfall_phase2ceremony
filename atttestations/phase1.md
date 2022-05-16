@@ -8,7 +8,7 @@ can find them here:
 
 [https://github.com/weijiekoh/perpetualpowersoftau](https://github.com/weijiekoh/perpetualpowersoftau)
 
-The Blake2b of the 54th contribution response is:
+The Blake2b of the 71st contribution response is:
 
 ```
     fd607e90 10a84289 81ef636d 798240c9
