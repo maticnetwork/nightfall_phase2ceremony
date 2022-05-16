@@ -10,12 +10,12 @@ This phase2 was run on 4 circuits:
 - double_transfer: Circuit used to spend two commitments
 - withdraw: Circuit used to withdraw funds.
 
-This ceremony was run by 3 trusted individuals from the community:
+This ceremony was run by 4 trusted individuals from the community:
 
-- Darko
-- Baylina
-- Brody
-- Connor
+1. [Darko Macesic (github ID: dark64)](https://github.com/maticnetwork/nightfall_phase2ceremony/blob/main/atttestations/1_Darko.md)
+2. [Jordi Bailyna (github ID: jbaylina)](https://github.com/maticnetwork/nightfall_phase2ceremony/blob/main/atttestations/2_Baylina.md)
+3. [Paul Brody (EY Global Blockchain Leader)](https://github.com/maticnetwork/nightfall_phase2ceremony/blob/main/atttestations/3_Brody.md)
+4. [Michael Connor (github ID: iAmMichaelConnor)](https://github.com/maticnetwork/nightfall_phase2ceremony/blob/main/atttestations/4_Connor.md)
 
 ## Last contributions
 
