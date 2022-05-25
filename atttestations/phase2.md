@@ -73,7 +73,7 @@ Notice that according to
 [this](https://electriccoin.co/blog/reinforcing-the-security-of-the-sapling-mpc/), a random beacon
 might not be strictly necessary. Nevertheless, we considered it best practise to do so.
 
-For this, we applied the block hash of block number 14718411 of the ethereum main chain. The transaction that has sent by
+To add a random bracon, we applied the block hash of block number 14718411 of the ethereum main chain. The transaction that has sent by
 [Duncan Westland](https://github.com/Westlad) stating this block number is
 [0xd42eff8e34aa9227cdceb12daf1d868b3dec025ac23073cfd103bb697642dbc1](https://etherscan.io/tx/0xd42eff8e34aa9227cdceb12daf1d868b3dec025ac23073cfd103bb697642dbc1). 
 
