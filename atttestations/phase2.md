@@ -79,7 +79,16 @@ To add a random beacon, we applied the block hash of block number 14718411 of th
 
 The block landed on May 5, 2022 at 05:00:27 PM +UTC and had the blockhash [0x875966a4d290bae914acd733315d1a1cbea3fb2b9fde133a0c6fffa7f726cbe3](https://etherscan.io/block/14718411). This hash was then hashed recursively 1024 times.
 
+```js
+import crypto from 'crypto';
+
+let h = '875966a4d290bae914acd733315d1a1cbea3fb2b9fde133a0c6fffa7f726cbe3';
+for (let i = 0; i < 1024; i++) {
+  h = crypto.createHash('sha256').update(h, 'hex').digest('hex');
+}
+```
+
 The output is 0x144212c1ae36d729307364dcb845a04b9c5f523fe557eb777a910d4ea6cc5a09, which was then used as the last contribution with zokrates 0.7.11
 ```bash
-zokrates mpc beacon -i params/[last param file] -o params/out/[final param file] -h 0x875966a4d290bae914acd733315d1a1cbea3fb2b9fde133a0c6fffa7f726cbe3 -n 10
+zokrates mpc beacon -i params/[last param file] -o params/out/[final param file] -h 0x144212c1ae36d729307364dcb845a04b9c5f523fe557eb777a910d4ea6cc5a09 -n 10
 ```
