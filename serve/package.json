@@ -1,0 +1,21 @@
+{
+  "name": "serve",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "author": "José Pedro Sousa <github@zepedro.me>",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "pino": "^8.7.0",
+    "pino-http": "^8.2.1",
+    "pino-pretty": "^9.1.1"
+  }
+}
