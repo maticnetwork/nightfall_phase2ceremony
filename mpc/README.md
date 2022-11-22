@@ -1,17 +1,54 @@
-# NOTES
+# Nightfall MPC ceremony (phase 2)
 
-# Phase1
+## Contribute
 
-We need to prepare phase2:
-https://github.com/iden3/snarkjs#7-prepare-phase-2
+We use phase1 from the perpetual powers of tau. This phase2 is circuit-specific.
 
-For this we need first to know the number of constraints for our circuits and select the correct ptau file.
+To contribute to Nightfall phase 2 ceremony:
 
-Then we get this `pot12_final.ptau` and compute the `.key` file that will be hosted somewhere and downloaded on our react app:
-https://github.com/iden3/snarkjs#groth16
+```
+git clone git@github.com:maticnetwork/nightfall_phase2ceremony.git
+cd nightfall_phase2ceremony/mpc
+./mpc_contribute.sh
+```
 
-Then on the browser we're able to run this:
-https://github.com/iden3/snarkjs#16-contribute-to-the-phase-2-ceremony
+This contribution will download the existent MPC params from a S3 bucket, and now it is your chance
+to provide some randomness to it.
 
-We should also provide a button to verify the latest .key:
-https://github.com/iden3/snarkjs#19-verify-the-latest-zkey
+When asked for a random input, you may use one of the following sources of entropy (suggestions from
+[zokrates](https://zokrates.github.io/toolbox/trusted_setup.html)):
+
+- `/dev/urandom` from one or more devices
+- The most recent block hash
+- Randomly mashing keys on the keyboard
+
+After finishing, you should have your new mpc params in `./nightfall.phase2.contrib.${NAME}.tgz`.
+Please, send this file to us so that we can continue with the next contribution.
+
+We will post your contribution in this repository. You can verify that the contribution we post
+matches the `b2sum` hash in params/out/xxx.b2sum.
+
+## Verify
+
+Verify contributions. You will need to retrieve a copy of the compiled circuits and copy them in
+`./circuits` as `deposit`, `single_transfer`, `double_transfer`, `withdraw`.
+
+To perform verification,
+
+```
+cd nightfall_phase2ceremony/mpc
+./mpc_verify.sh
+```
+
+## Testing
+
+You need to install Docker first. Then, to test, just run `npm t` on the root folder.
+
+## Requirements
+
+We use `b2sum`. Please install it if you don't have it installed on your system.
+
+## Other stuff
+
+`ceremony`, `verification` and `beacon` files are to be used internally in order to start, verify
+and apply random beacon
