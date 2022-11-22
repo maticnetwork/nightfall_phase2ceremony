@@ -16,7 +16,7 @@ const uploadSchema = joi.object({
   name: joi.string().alphanum().min(3).max(20).required(),
   circuit: joi
     .string()
-    .valid('deposit', 'withdraw', 'transfer', 'transform', 'tokenize', 'burn')
+    .valid('deposit', 'withdraw', 'transfer', 'transform', 'tokenise', 'burn')
     .required(),
 });
 
