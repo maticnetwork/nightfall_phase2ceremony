@@ -24,7 +24,7 @@ program.description('Contribute').action(async () => {
   const promises = [];
   circuits.map(async circuit => {
     promises.push(
-      new Promise((resolve, reject) => {
+      new Promise(async (resolve, reject) => {
         s3.listObjects({ Bucket: `mpc2`, Prefix: circuit }, (err, data) => {
           if (err) throw err;
           const contributions = data.Contents.filter(cont => cont.Key !== `${circuit}/`).sort(
@@ -50,7 +50,10 @@ program.description('Contribute').action(async () => {
 
             axios(config)
               .then(function (response) {
-                resolve({ circuit, verification: response.data.verification });
+                console.log(chalk.green('Contributed to circuit ' + circuit));
+                console.log(chalk.blue('Verification:'));
+                console.log(chalk.blue(response.data.verification));
+                resolve();
               })
               .catch(function (error) {
                 console.log(chalk.red(error));
@@ -62,13 +65,8 @@ program.description('Contribute').action(async () => {
     );
   });
 
-  Promise.all(promises).then(proms => {
-    for (let i of proms) {
-      console.log(chalk.green('Contributed to circuit ' + i.circuit));
-      console.log(chalk.blue('Verification:'));
-      console.log(chalk.blue(i.verification));
-      console.log(chalk.pink('Thank you for your contribution!'));
-    }
+  await Promise.all(promises).then(() => {
+    console.log(chalk.bgGreen('Thank you for your contribution!'));
     process.exit(0);
   });
 });

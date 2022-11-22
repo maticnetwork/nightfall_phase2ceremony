@@ -21,7 +21,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('static'));
 app.use('/', upload);
 
 app.get('/healthcheck', (req, res) => {
