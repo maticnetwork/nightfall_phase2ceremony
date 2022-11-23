@@ -1,10 +1,6 @@
 terraform {
   cloud {
     organization = "polygon-nightfall"
-
-    workspaces {
-        name = "mpc"
-    }
   }
 
   required_providers {
@@ -83,6 +79,10 @@ resource "aws_instance" "mpc" {
   key_name = "ssh" # Remove if not needed!
   vpc_security_group_ids = [aws_security_group.main.id]
   depends_on = [ aws_security_group.main ]
+
+  tags = {
+    Name = "${terraform.workspace}"
+  }
 }
 
 
