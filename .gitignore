@@ -1,8 +1,8 @@
 *.tgz
-params
-radix
-circuits
 .env
 node_modules
 log
 out
+mpc/*.zkey
+*.pem
+.terraform*

@@ -30,6 +30,7 @@ program.description('Contribute').action(async () => {
           const contributions = data.Contents.filter(cont => cont.Key !== `${circuit}/`).sort(
             (a, b) => new Date(b.LastModified) - new Date(a.LastModified),
           );
+          console.log('contributions', contributions);
           s3.getObject({ Bucket: `mpc2`, Key: contributions[0].Key }, async (err, data) => {
             await zKey.contribute(data.Body, `contribution_${circuit}.zkey`, name, entropy);
 
@@ -41,7 +42,7 @@ program.description('Contribute').action(async () => {
 
             var config = {
               method: 'post',
-              url: 'http://localhost:3333/upload',
+              url: 'http://ec2-35-180-139-216.eu-west-3.compute.amazonaws.com:3333/upload',
               headers: {
                 ...formData.getHeaders(),
               },

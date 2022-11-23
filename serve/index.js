@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
