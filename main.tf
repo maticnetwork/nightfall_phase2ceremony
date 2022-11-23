@@ -64,6 +64,13 @@ resource "aws_security_group" "main" {
   ]
 }
 
+variable "BRANCH" {
+  type = string
+}
+
+output "branch" {
+  value = var.BRANCH
+}
 
 resource "aws_instance" "mpc" {
   ami           = "ami-064736ff8301af3ee"
@@ -71,6 +78,7 @@ resource "aws_instance" "mpc" {
   user_data_base64 = base64encode("${templatefile("server.sh", {
       access_key_secret = var.AWS_SECRET_ACCESS_KEY
       access_key_id = var.AWS_ACCESS_KEY_ID
+      git_branch = var.BRANCH
   })}")
   key_name = "ssh" # Remove if not needed!
   vpc_security_group_ids = [aws_security_group.main.id]
