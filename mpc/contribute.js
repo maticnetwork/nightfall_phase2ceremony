@@ -41,7 +41,7 @@ program.description('Contribute').action(async () => {
 
             var config = {
               method: 'post',
-              url: 'http://localhost:1234/upload',
+              url: 'http://localhost:3333/upload',
               headers: {
                 ...formData.getHeaders(),
               },
