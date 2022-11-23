@@ -5,7 +5,7 @@ name: 'Terraform'
 on:
   push:
     branches:
-      - main
+      - nightfall/new_mpc
 
 jobs:
   terraform:
