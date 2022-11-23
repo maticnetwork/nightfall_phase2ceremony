@@ -2,7 +2,7 @@ name: Create new workspace
 
 on:
   pull_request:
-    types: [opened]
+    # types: [opened]
 
 jobs:
   run_tests:
