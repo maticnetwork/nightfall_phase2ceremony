@@ -3,7 +3,7 @@ terraform {
     organization = "polygon-nightfall"
 
     workspaces {
-        tags = "mpc"
+        tags = ["mpc"]
     }
   }
 
