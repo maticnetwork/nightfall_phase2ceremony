@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  app:
+    build: .
+    ports:
+      - '3333:3333'
+    command: npm start
