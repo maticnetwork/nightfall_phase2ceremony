@@ -1,6 +1,10 @@
 terraform {
   cloud {
     organization = "polygon-nightfall"
+
+    workspaces {
+        tags = "mpc"
+    }
   }
 
   required_providers {
