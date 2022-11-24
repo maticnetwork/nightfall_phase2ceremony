@@ -37,7 +37,7 @@ jobs:
         with:
           variables: |
             BRANCH = "${{ github.head_ref }}"
-          workspace: mpc-${{ github.head_ref }}
+          workspace: ${{ github.head_ref }}
 
       # If workflow dispatch, use ref_name
       - name: Recursively remove this s3 bucket folder
@@ -51,4 +51,4 @@ jobs:
         with:
           variables: |
             BRANCH = "${{ github.ref_name }}"
-          workspace: mpc-${{ github.ref_name }}
+          workspace: ${{ github.ref_name }}
