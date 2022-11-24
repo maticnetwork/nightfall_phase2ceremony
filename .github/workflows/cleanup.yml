@@ -10,6 +10,8 @@ jobs:
   destroy_workspace:
     runs-on: ubuntu-latest
     name: Destroy terraform workspace
+    env:
+      TERRAFORM_CLOUD_TOKENS: app.terraform.io=${{ secrets.TF_API_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
