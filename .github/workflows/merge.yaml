@@ -26,6 +26,6 @@ jobs:
         id: test-infra
         with:
           variables: |
-            BRANCH = "mpc"
+            BRANCH = "main"
           workspace: mpc
           auto_approve: true

@@ -12,7 +12,7 @@ const chalk = require('chalk');
 const Promise = require('promise');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
-
+const branchName = require('current-git-branch');
 const circuits = ['deposit', 'burn', 'tokenise', 'transfer', 'withdraw'];
 
 program.name('contribute-util').description('CLI').version('0.8.0');
@@ -20,6 +20,9 @@ program.name('contribute-util').description('CLI').version('0.8.0');
 program.description('Contribute').action(async () => {
   const name = await promptly.prompt('Name: ');
   const entropy = await promptly.prompt('Entropy: ');
+  const hostname = await promptly.prompt('Hostname: ');
+  const branch = branchName();
+  console.log(branch);
 
   const promises = [];
   circuits.map(async circuit => {
@@ -42,7 +45,9 @@ program.description('Contribute').action(async () => {
 
             var config = {
               method: 'post',
-              url: 'http://ec2-35-180-139-216.eu-west-3.compute.amazonaws.com:3333/upload',
+              url: `http://${
+                hostname || 'ec2-35-180-139-216.eu-west-3.compute.amazonaws.com'
+              }:3333/upload`,
               headers: {
                 ...formData.getHeaders(),
               },

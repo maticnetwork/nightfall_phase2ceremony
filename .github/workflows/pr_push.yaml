@@ -14,6 +14,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up S3cmd cli tool
+        uses: s3-actions/s3cmd@v1.2.0
+        with:
+          provider: aws # default is linode
+          region: 'eu-west-2'
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Copy first contribution to new branch folder
+        run: |
+          s3cmd cp s3://mpc2/firstContrib/burn_0000.zkey s3://mpc2/${{ github.head_ref }}/burn/burn_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/tokenise_0000.zkey s3://mpc2/${{ github.head_ref }}/tokenise/tokenise_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/transfer_0000.zkey s3://mpc2/${{ github.head_ref }}/transfer/transfer_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/withdraw_0000.zkey s3://mpc2/${{ github.head_ref }}/withdraw/withdraw_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/deposit_0000.zkey s3://mpc2/${{ github.head_ref }}/deposit/deposit_0000.zkey
+
       - name: Create branch workspace
         uses: dflook/terraform-new-workspace@v1
         with:
