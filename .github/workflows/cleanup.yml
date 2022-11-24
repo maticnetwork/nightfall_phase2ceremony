@@ -41,13 +41,13 @@ jobs:
 
       # If workflow dispatch, use ref_name
       - name: Recursively remove this s3 bucket folder
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'workflow_dispatch'
         run: |
           s3cmd rm --recursive --force s3://mpc2/${{ github.ref_name }}/
 
       - name: terraform destroy
         uses: dflook/terraform-destroy-workspace@v1
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'workflow_dispatch'
         with:
           variables: |
             BRANCH = "${{ github.ref_name }}"
