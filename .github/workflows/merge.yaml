@@ -1,6 +1,6 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-name: 'Terraform on push to main'
+name: 'Terraform on Merge'
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Run Terraform on Merge'
     runs-on: ubuntu-latest
     env:
       TERRAFORM_CLOUD_TOKENS: app.terraform.io=${{ secrets.TF_API_TOKEN }}

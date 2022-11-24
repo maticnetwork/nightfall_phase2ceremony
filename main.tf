@@ -1,9 +1,9 @@
 terraform {
-  cloud {
+  backend "remote" {
     organization = "polygon-nightfall"
 
     workspaces {
-        tags = ["mpc"]
+      prefix = "mpc-"
     }
   }
 
@@ -70,10 +70,6 @@ variable "BRANCH" {
   type = string
 }
 
-output "branch" {
-  value = var.BRANCH
-}
-
 resource "aws_instance" "mpc" {
   ami           = "ami-064736ff8301af3ee"
   instance_type = "t3.large"
@@ -85,19 +81,23 @@ resource "aws_instance" "mpc" {
   key_name = "ssh" # Remove if not needed!
   vpc_security_group_ids = [aws_security_group.main.id]
   depends_on = [ aws_security_group.main ]
+  associate_public_ip_address = true
+
+  tags = {
+    "Name" = "${var.BRANCH}"
+  }
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = "Z05413741GQORWY8FTPNF"
+  name    = "%{ if var.BRANCH != "main" }${var.BRANCH}.ceremony.polygon-nightfall.io%{ else }ceremony.polygon-nightfall.io%{ endif }"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.mpc.public_ip]
 }
 
 
-# resource "aws_eip" "eip" {
-#   vpc      = true
-# }
-
-# resource "aws_eip_association" "eip_assoc" {
-#   instance_id   = aws_instance.mpc.id
-#   allocation_id = aws_eip.eip.id
-# }
-
 output "instance_dns" {
   description = "The public ip"
-  value       = aws_instance.mpc.public_dns
+  value       = aws_route53_record.www.name
 }

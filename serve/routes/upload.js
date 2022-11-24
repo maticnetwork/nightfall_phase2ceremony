@@ -1,10 +1,9 @@
 import express from 'express';
 import joi from 'joi';
 import { createValidator } from 'express-joi-validation';
-import fs from 'fs';
 import AWS from 'aws-sdk';
 import { zKey } from 'snarkjs';
-import path from 'path';
+import branchName from 'current-git-branch';
 
 const s3 = new AWS.S3();
 
@@ -66,7 +65,7 @@ router.post('/upload', validator.body(uploadSchema), validateContribution, async
       let contrib = req.files.contribution;
       const uploadParams = {
         Bucket: `mpc2`,
-        Key: `${circuit}/${name}.zkey`,
+        Key: `${branchName}/${circuit}/${name}.zkey`,
         Body: contrib.data,
       };
 
