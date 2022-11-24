@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['codfish', 'eslint:recommended', 'plugin:prettier/recommended'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   rules: {
     'no-underscore-dangle': 'off',
     'no-console': 'off',

@@ -1,54 +1,50 @@
-# Nightfall MPC ceremony (phase 2)
+# Nightfall3 MPC ceremony (phase 2)
 
 ## Contribute
 
-We use phase1 from the perpetual powers of tau. This phase2 is circuit-specific.
+### We use phase1 from the perpetual powers of tau. This phase2 is circuit-specific.
 
-To contribute to Nightfall phase 2 ceremony:
+**To contribute to Nightfall phase 2 ceremony, please, do:**
+
+#### 1. Clone repo
 
 ```
 git clone git@github.com:maticnetwork/nightfall_phase2ceremony.git
-cd nightfall_phase2ceremony/mpc
-./mpc_contribute.sh
 ```
 
-This contribution will download the existent MPC params from a S3 bucket, and now it is your chance
-to provide some randomness to it.
-
-When asked for a random input, you may use one of the following sources of entropy (suggestions from
-[zokrates](https://zokrates.github.io/toolbox/trusted_setup.html)):
-
-- `/dev/urandom` from one or more devices
-- The most recent block hash
-- Randomly mashing keys on the keyboard
-
-After finishing, you should have your new mpc params in `./nightfall.phase2.contrib.${NAME}.tgz`.
-Please, send this file to us so that we can continue with the next contribution.
-
-We will post your contribution in this repository. You can verify that the contribution we post
-matches the `b2sum` hash in params/out/xxx.b2sum.
-
-## Verify
-
-Verify contributions. You will need to retrieve a copy of the compiled circuits and copy them in
-`./circuits` as `deposit`, `single_transfer`, `double_transfer`, `withdraw`.
-
-To perform verification,
+#### 2. Go to the mpc folder
 
 ```
 cd nightfall_phase2ceremony/mpc
-./mpc_verify.sh
 ```
 
-## Testing
+#### 3. Run npm install
 
-You need to install Docker first. Then, to test, just run `npm t` on the root folder.
+```
+npm install
+```
 
-## Requirements
+#### 4. Run npm contribute to give your contribution
 
-We use `b2sum`. Please install it if you don't have it installed on your system.
+```
+npm run contribute
+```
 
-## Other stuff
+### The process
 
-`ceremony`, `verification` and `beacon` files are to be used internally in order to start, verify
-and apply random beacon
+What the contribute.js file is doing?
+
+- Ask you to insert your name.
+- Ask you for some entropy.
+- For each circuit ('deposit', 'withdraw', 'transfer', 'transform', 'tokenise', 'burn'):
+  - Get the last contribution from our S3 bucket;
+  - We use the contribute function from zkey object of **snarkjs** package that will receive the
+    last file, a new file name to be generated, your name and entropy passedm and will generate a
+    new contribution file.
+  - After that your contribution gonna be send to our server verification that will verify if the
+    file is valid. If not you should receive a warn message, otherwise the file will be uploaded to
+    our S3 bucket and you will receive a log with all the last contributions.
+
+### Conclusion
+
+After that you contribution should already be added to Nightfall_3 MPC Ceremony.

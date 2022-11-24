@@ -1,0 +1,33 @@
+{
+  "name": "serve",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "author": "José Pedro Sousa <github@zepedro.me>",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ec2:create": "node ./aws/ec2_instance_create.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.215.0",
+    "aws-sdk": "^2.1260.0",
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "express-joi-validation": "^5.0.1",
+    "http-errors": "^2.0.0",
+    "joi": "^17.7.0",
+    "nodemon": "^2.0.20",
+    "pino": "^8.7.0",
+    "pino-http": "^8.2.1",
+    "pino-pretty": "^9.1.1",
+    "promptly": "^3.2.0",
+    "snarkjs": "^0.5.0"
+  }
+}
