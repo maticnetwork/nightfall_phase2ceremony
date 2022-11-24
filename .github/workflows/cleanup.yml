@@ -4,7 +4,7 @@ name: 'Cleanup'
 
 on:
   pull_request:
-    types: [closed]
+    types: [edited]
 
 jobs:
   destroy_workspace:
@@ -16,6 +16,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: terraform destroy
-        uses: dflook/terraform-destroy@v1
+        uses: dflook/terraform-destroy-workspace@v1
         with:
+          variables: |
+            BRANCH = "${{ github.head_ref }}"
           workspace: ${{ github.head_ref }}
