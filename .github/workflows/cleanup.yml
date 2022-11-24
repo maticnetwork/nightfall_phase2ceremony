@@ -4,7 +4,7 @@ name: 'Cleanup'
 
 on:
   pull_request:
-    types: [edited]
+    types: [closed]
 
 jobs:
   destroy_workspace:
