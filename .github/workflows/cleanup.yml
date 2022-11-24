@@ -16,9 +16,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up S3cmd cli tool
+        uses: s3-actions/s3cmd@v1.2.0
+        with:
+          provider: aws # default is linode
+          region: 'eu-west-2'
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # If pull request, use head_ref
+      - name: Recursively remove this s3 bucket folder
+        if: github.event_name == 'pull_request'
+        run: |
+          s3cmd rm --recursive --force s3://mpc2/${{ github.head_ref }}/
+
       - name: terraform destroy
         uses: dflook/terraform-destroy-workspace@v1
+        if: github.event_name == 'pull_request'
         with:
           variables: |
             BRANCH = "${{ github.head_ref }}"
           workspace: ${{ github.head_ref }}
+
+      # If workflow dispatch, use ref_name
+      - name: Recursively remove this s3 bucket folder
+        if: github.event_name == 'pull_request'
+        run: |
+          s3cmd rm --recursive --force s3://mpc2/${{ github.ref_name }}/
+
+      - name: terraform destroy
+        uses: dflook/terraform-destroy-workspace@v1
+        if: github.event_name == 'pull_request'
+        with:
+          variables: |
+            BRANCH = "${{ github.ref_name }}"
+          workspace: ${{ github.ref_name }}
