@@ -35,9 +35,9 @@ jobs:
         uses: dflook/terraform-destroy-workspace@v1
         if: github.event_name == 'pull_request'
         with:
+          workspace: ${{ github.head_ref }}
           variables: |
             BRANCH = "${{ github.head_ref }}"
-          workspace: ${{ github.head_ref }}
 
       # If workflow dispatch, use ref_name
       - name: Recursively remove this s3 bucket folder
@@ -49,6 +49,6 @@ jobs:
         uses: dflook/terraform-destroy-workspace@v1
         if: github.event_name == 'workflow_dispatch'
         with:
+          workspace: ${{ github.ref_name }}
           variables: |
             BRANCH = "${{ github.ref_name }}"
-          workspace: ${{ github.ref_name }}
