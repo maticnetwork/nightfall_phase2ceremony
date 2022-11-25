@@ -4,7 +4,7 @@ node_modules
 log
 out
 *.zkey
-!circuits/*.zkey
+!circuits/**/*.zkey
 *.pem
 .terraform*
 tmp
