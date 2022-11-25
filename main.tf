@@ -78,6 +78,7 @@ resource "aws_instance" "mpc" {
       access_key_id = var.AWS_ACCESS_KEY_ID
       git_branch = var.BRANCH
   })}")
+  user_data_replace_on_change = true
   key_name = "ssh" # Remove if not needed!
   vpc_security_group_ids = [aws_security_group.main.id]
   depends_on = [ aws_security_group.main ]
