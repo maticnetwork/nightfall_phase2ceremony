@@ -5,6 +5,9 @@ name: 'Terraform on pull_request'
 on:
   pull_request:
 
+env:
+  BRANCH: ${{ github.ref_name }}
+
 jobs:
   terraform:
     name: 'Run Terraform on pull-request'
@@ -23,13 +26,21 @@ jobs:
           access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      - name: debug
+        run: |
+          echo ${{ github.ref_name }}
+
+      - name: debug2
+        run: |
+          echo $BRANCH
+
       - name: Copy first contribution to new branch folder
         run: |
-          s3cmd cp s3://mpc2/firstContrib/burn_0000.zkey s3://mpc2/${{ github.ref_name }}/burn/burn_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/tokenise_0000.zkey s3://mpc2/${{ github.ref_name }}/tokenise/tokenise_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/transfer_0000.zkey s3://mpc2/${{ github.ref_name }}/transfer/transfer_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/withdraw_0000.zkey s3://mpc2/${{ github.ref_name }}/withdraw/withdraw_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/deposit_0000.zkey s3://mpc2/${{ github.ref_name }}/deposit/deposit_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/burn_0000.zkey s3://mpc2/$BRANCH/burn/burn_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/tokenise_0000.zkey s3://mpc2/$BRANCH/tokenise/tokenise_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/transfer_0000.zkey s3://mpc2/$BRANCH/transfer/transfer_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/withdraw_0000.zkey s3://mpc2/$BRANCH/withdraw/withdraw_0000.zkey
+          s3cmd cp s3://mpc2/firstContrib/deposit_0000.zkey s3://mpc2/$BRANCH/deposit/deposit_0000.zkey
 
       - name: Create branch workspace
         uses: dflook/terraform-new-workspace@v1
