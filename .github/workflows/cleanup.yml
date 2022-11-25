@@ -37,6 +37,7 @@ jobs:
         with:
           variables: |
             BRANCH = "${{ github.head_ref }}"
+            COMMITHASH = "${{ github.sha }}"
           workspace: ${{ github.head_ref }}
 
       # If workflow dispatch, use ref_name
@@ -51,4 +52,5 @@ jobs:
         with:
           variables: |
             BRANCH = "${{ github.ref_name }}"
+            COMMITHASH = "${{ github.sha }}"
           workspace: ${{ github.ref_name }}
