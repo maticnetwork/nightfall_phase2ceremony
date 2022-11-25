@@ -8,3 +8,5 @@ out
 *.pem
 .terraform*
 tmp
+
+bundles.js
