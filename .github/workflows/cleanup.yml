@@ -6,6 +6,11 @@ on:
   pull_request:
     types: [closed]
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'A branch name to delete'
+        required: true
+        type: string
 
 jobs:
   destroy_workspace:
@@ -39,16 +44,16 @@ jobs:
           variables: |
             BRANCH = "${{ github.head_ref }}"
 
-      # If workflow dispatch, use ref_name
+      # If workflow dispatch, use input
       - name: Recursively remove this s3 bucket folder
         if: github.event_name == 'workflow_dispatch'
         run: |
-          s3cmd rm --recursive --force s3://mpc2/${{ github.ref_name }}/
+          s3cmd rm --recursive --force s3://mpc2/${{ inputs.branch }}/
 
       - name: terraform destroy
         uses: dflook/terraform-destroy-workspace@v1
         if: github.event_name == 'workflow_dispatch'
         with:
-          workspace: ${{ github.ref_name }}
+          workspace: ${{ inputs.branch }}
           variables: |
-            BRANCH = "${{ github.ref_name }}"
+            BRANCH = "${{ inputs.branch }}"
