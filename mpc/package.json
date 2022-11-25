@@ -13,7 +13,8 @@
     "lint": "eslint . --ext js,mjs,jsx,ts,tsx"
   },
   "bin": {
-    "contribute": "contribute.js"
+    "contribute": "contribute.js",
+    "beacon": "beacon.js"
   },
   "author": "",
   "license": "ISC",

@@ -15,11 +15,11 @@ const s3 = new AWS.S3();
 const branchName = require('current-git-branch');
 const circuits = ['deposit', 'burn', 'tokenise', 'transfer', 'withdraw'];
 
-program.name('contribute-util').description('CLI').version('0.8.0');
+program.name('beacon-util').description('CLI').version('0.8.0');
 
-program.description('Contribute').action(async () => {
+program.description('Beacon').action(async () => {
   const name = await promptly.prompt('Name: ');
-  const entropy = await promptly.prompt('Entropy: ');
+  const beaconHash = await promptly.prompt('Beacon entropy: ');
   const branch = await promptly.prompt('Git branch (optional): ', { default: branchName() });
   console.log('Using branch: ', branch);
 
@@ -33,10 +33,11 @@ program.description('Contribute').action(async () => {
             (a, b) => new Date(b.LastModified) - new Date(a.LastModified),
           );
           s3.getObject({ Bucket: `mpc2`, Key: `${contributions[0].Key}` }, async (err, data) => {
-            await zKey.contribute(data.Body, `contribution_${circuit}.zkey`, name, entropy);
+            // await zKey.contribute(data.Body, `contribution_${circuit}.zkey`, name, entropy);
+            await zKey.beacon(data.Body, `beacon_${circuit}.zkey`, 'beacon', beaconHash, 10);
 
             const formData = new FormData();
-            const testPath = path.join(__dirname, `contribution_${circuit}.zkey`);
+            const testPath = path.join(__dirname, `beacon_${circuit}.zkey`);
             formData.append('contribution', fs.createReadStream(testPath));
             formData.append('name', name);
             formData.append('circuit', circuit);
@@ -54,7 +55,7 @@ program.description('Contribute').action(async () => {
 
             axios(config)
               .then(function (response) {
-                console.log(chalk.green('Contributed to circuit ' + circuit));
+                console.log(chalk.green('Applied beacon to circuit ' + circuit));
                 console.log(chalk.blue('Verification:'));
                 console.log(chalk.blue(response.data.verification));
                 resolve();
