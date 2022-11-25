@@ -65,7 +65,7 @@ router.post('/upload', validator.body(uploadSchema), validateContribution, async
       let contrib = req.files.contribution;
       const uploadParams = {
         Bucket: `mpc2`,
-        Key: `${branchName}/${circuit}/${name}.zkey`,
+        Key: `${branchName()}/${circuit}/${name}.zkey`,
         Body: contrib.data,
       };
 
