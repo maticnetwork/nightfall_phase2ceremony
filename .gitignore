@@ -3,6 +3,8 @@
 node_modules
 log
 out
-mpc/*.zkey
+*.zkey
+!circuits/**/*.zkey
 *.pem
 .terraform*
+tmp

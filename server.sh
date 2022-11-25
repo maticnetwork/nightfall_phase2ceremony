@@ -9,6 +9,8 @@ export NVM_DIR="$HOME/.nvm"
 
 ## Cloning Nightfall repo and installing the NPM version used
 git clone -b ${git_branch} https://github.com/maticnetwork/nightfall_phase2ceremony.git
+echo "Commit hash ${commit_hash}"
+
 cd nightfall_phase2ceremony/serve
 nvm install
 nvm use
