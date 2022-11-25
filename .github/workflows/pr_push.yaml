@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  BRANCH: ${{ github.ref_name }}
+  BRANCH: ${{ github.head_ref }}
 
 jobs:
   terraform:
@@ -28,7 +28,7 @@ jobs:
 
       - name: debug
         run: |
-          echo ${{ github.ref_name }}
+          echo ${{ github.head_ref }}
 
       - name: debug2
         run: |
@@ -45,13 +45,13 @@ jobs:
       - name: Create branch workspace
         uses: dflook/terraform-new-workspace@v1
         with:
-          workspace: ${{ github.ref_name }}
+          workspace: ${{ github.head_ref }}
 
       - name: Deploy infrastrucutre
         uses: dflook/terraform-apply@v1
         id: test-infra
         with:
           variables: |
-            BRANCH = "${{ github.ref_name }}"
-          workspace: ${{ github.ref_name }}
+            BRANCH = "${{ github.head_ref }}"
+          workspace: ${{ github.head_ref }}
           auto_approve: true
