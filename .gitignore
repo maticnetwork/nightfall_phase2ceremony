@@ -6,3 +6,4 @@ out
 mpc/*.zkey
 *.pem
 .terraform*
+tmp
