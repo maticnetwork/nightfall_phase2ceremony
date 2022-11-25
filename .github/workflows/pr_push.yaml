@@ -23,6 +23,10 @@ jobs:
           access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      - name: Recursively remove this s3 bucket folder
+        run: |
+          s3cmd rm --recursive --force s3://mpc2/${{ github.head_ref }}/
+
       - name: Copy first contribution to new branch folder
         run: |
           s3cmd cp s3://mpc2/firstContrib/burn_0000.zkey s3://mpc2/${{ github.head_ref }}/burn/burn_0000.zkey
