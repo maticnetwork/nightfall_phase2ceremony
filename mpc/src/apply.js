@@ -21,13 +21,7 @@ module.exports = async function apply({ type, name, contribData, branch, circuit
           s3.getObject({ Bucket: `mpc2`, Key: `${bucketData[0].Key}` }, async (err, data) => {
             let res;
             if (type === 'contribution') {
-              res = await zKey.contribute(
-                data.Body,
-                `${type}_${circuit}.zkey`,
-                name,
-                contribData,
-                console,
-              );
+              res = await zKey.contribute(data.Body, `${type}_${circuit}.zkey`, name, contribData);
             } else if (type === 'beacon') {
               res = await zKey.beacon(
                 data.Body,

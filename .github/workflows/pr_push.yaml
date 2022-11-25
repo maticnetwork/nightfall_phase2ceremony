@@ -42,5 +42,6 @@ jobs:
         with:
           variables: |
             BRANCH = "${{ github.head_ref }}"
+            COMMITHASH = "${{ github.sha }}"
           workspace: ${{ github.head_ref }}
           auto_approve: true

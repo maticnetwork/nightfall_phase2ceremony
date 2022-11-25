@@ -27,5 +27,6 @@ jobs:
         with:
           variables: |
             BRANCH = "main"
+            COMMITHASH = "${{ github.sha }}"
           workspace: mpc
           auto_approve: true
