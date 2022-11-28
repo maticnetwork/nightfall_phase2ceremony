@@ -42,7 +42,7 @@ jobs:
 
       - name: Copy first contribution to new branch folder
         run: |
-          s3cmd sync circuits/* s3://mpc-${{ github.head_ref }} --exclude="*.r1cs" --exclude="*.ptau" --exclude="*.DS_Store*
+          s3cmd sync circuits/* s3://mpc-${{ github.head_ref }} --exclude="*.r1cs" --exclude="*.ptau" --exclude="*.DS_Store"
   # browser:
   #   runs-on: ubuntu-latest
   #   name: Build and deploy browser
