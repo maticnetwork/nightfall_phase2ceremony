@@ -42,12 +42,7 @@ jobs:
 
       - name: Copy first contribution to new branch folder
         run: |
-          s3cmd cp circuits/burn/burn_0000.zkey s3://mpc-${{ github.head_ref }}/burn/burn_0000.zkey
-          s3cmd cp circuits/tokenise/tokenise_0000.zkey s3://mpc-${{ github.head_ref }}/tokenise/tokenise_0000.zkey
-          s3cmd cp circuits/transfer/transfer_0000.zkey s3://mpc-${{ github.head_ref }}/transfer/transfer_0000.zkey
-          s3cmd cp circuits/withdraw/withdraw_0000.zkey s3://mpc-${{ github.head_ref }}/withdraw/withdraw_0000.zkey
-          s3cmd cp circuits/deposit/deposit_0000.zkey s3://mpc-${{ github.head_ref }}/deposit/deposit_0000.zkey
-
+          s3cmd sync circuits/* s3://mpc-${{ github.head_ref }} --exclude="*.r1cs" --exclude="*.ptau" --exclude="*.DS_Store*
   # browser:
   #   runs-on: ubuntu-latest
   #   name: Build and deploy browser
