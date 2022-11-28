@@ -9,4 +9,4 @@ out
 .terraform*
 tmp
 
-bundles.js
+bundle*

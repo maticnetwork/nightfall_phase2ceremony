@@ -12,7 +12,7 @@ const validator = createValidator();
 const router = express.Router();
 
 const uploadSchema = joi.object({
-  name: joi.string().alphanum().min(3).max(20).required(),
+  name: joi.string().alphanum().max(40).required(),
   circuit: joi
     .string()
     .valid('deposit', 'withdraw', 'transfer', 'transform', 'tokenise', 'burn')
