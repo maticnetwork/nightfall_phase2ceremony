@@ -64,8 +64,8 @@ router.post('/upload', validator.body(uploadSchema), validateContribution, async
       //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
       let contrib = req.files.contribution;
       const uploadParams = {
-        Bucket: `mpc2`,
-        Key: `${branchName()}/${circuit}/${name}.zkey`,
+        Bucket: `mpc-${branchName()}`,
+        Key: `${circuit}/${name}.zkey`,
         Body: contrib.data,
       };
 

@@ -10,7 +10,7 @@ async function applyContrib({ circuit, type, name, contribData, branch }) {
     try {
       s3.makeUnauthenticatedRequest(
         'listObjects',
-        { Bucket: `mpc2`, Prefix: `${branch}/${circuit}` },
+        { Bucket: `mpc-${branch}`, Prefix: `${circuit}` },
         (err, data) => {
           if (err) throw err;
           const bucketData = data.Contents.filter(cont => cont.Key !== `${circuit}/`).sort(
@@ -18,7 +18,7 @@ async function applyContrib({ circuit, type, name, contribData, branch }) {
           );
           s3.makeUnauthenticatedRequest(
             'getObject',
-            { Bucket: `mpc2`, Key: `${bucketData[0].Key}` },
+            { Bucket: `mpc-${branch}`, Key: `${bucketData[0].Key}` },
 
             async (err, data) => {
               let res;

@@ -88,3 +88,4 @@ output "instance_dns" {
   description = "The public ip"
   value       = aws_route53_record.www.name
 }
+

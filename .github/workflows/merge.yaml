@@ -20,11 +20,13 @@ jobs:
         uses: dflook/terraform-new-workspace@v1
         with:
           workspace: mpc
+          path: terraform
 
       - name: Deploy infrastrucutre
         uses: dflook/terraform-apply@v1
         id: test-infra
         with:
+          path: terraform
           variables: |
             BRANCH = "main"
             COMMITHASH = "${{ github.sha }}"
