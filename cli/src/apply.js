@@ -41,9 +41,9 @@ module.exports = async function apply({ type, name, contribData, branch, circuit
 
             var config = {
               method: 'post',
-              url: `http://${
+              url: `https://${
                 branch !== 'main' ? `${branch}.ceremony` : 'ceremony'
-              }.polygon-nightfall.io:3333/upload`,
+              }.polygon-nightfall.io/upload`,
               headers: {
                 ...formData.getHeaders(),
               },

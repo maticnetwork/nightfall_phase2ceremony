@@ -51,9 +51,9 @@ async function applyContrib({ circuit, type, name, contribData, branch }) {
 
               var config = {
                 method: 'post',
-                url: `http://${
+                url: `https://${
                   branch !== 'main' ? `${branch}.ceremony` : 'ceremony'
-                }.polygon-nightfall.io:3333/upload`,
+                }.polygon-nightfall.io/upload`,
                 data: formData,
               };
 
