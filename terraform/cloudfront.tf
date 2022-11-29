@@ -8,6 +8,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   default_root_object = "index.html"
   enabled             = true
   is_ipv6_enabled     = true
+  aliases = var.BRANCH == "main" ? [ "ceremony.polygon-nightfall.io" ] : [ "${var.BRANCH}.ceremony.polygon-nightfall.io" ]
 
   default_cache_behavior {
     compress = false
@@ -21,7 +22,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = "arn:aws:acm:us-east-1:950711068211:certificate/bf2723a4-6eb3-45a4-be75-f0032d712d7d"
+    ssl_support_method = "sni-only"
   }
 
     restrictions {
@@ -30,4 +32,15 @@ resource "aws_cloudfront_distribution" "distribution" {
             restriction_type = "none"
         }
     }
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = "Z05413741GQORWY8FTPNF"
+  name    = "%{ if var.BRANCH != "main" }${var.BRANCH}.ceremony.polygon-nightfall.io%{ else }ceremony.polygon-nightfall.io%{ endif }"
+  type    = "A"
+  alias {
+    name                   = aws_cloudfront_distribution.distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
 }

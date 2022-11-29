@@ -43,16 +43,21 @@ jobs:
       - name: Copy first contribution to new branch folder
         run: |
           s3cmd sync circuits/* s3://mpc-${{ github.head_ref }} --exclude="*.r1cs" --exclude="*.ptau" --exclude="*.DS_Store"
-  # browser:
-  #   runs-on: ubuntu-latest
-  #   name: Build and deploy browser
-  #   steps:
-  #     - name: Use Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '16.17.0'
-  #         cache: 'npm'
-  #     - run: npm ci
-  #       working-directory: ./browser
-  #     - run: npm run build --if-present
-  #       working-directory: ./browser
+
+  browser:
+    runs-on: ubuntu-latest
+    name: Build and deploy browser
+    steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.17.0'
+          cache: 'npm'
+      - run: npm ci
+        working-directory: ./browser
+      - run: npm run build --if-present
+        working-directory: ./browser
+      - name: Copy first contribution to new branch folder
+        run: |
+          s3cmd sync build/* s3://mpc-${{ github.head_ref }}/website --exclude="*.DS_Store"
+        working-directory: ./browser
