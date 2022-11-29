@@ -1,7 +1,5 @@
 import './App.css';
 import { ContributeCard } from './components/contributeCard';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useEffect, useState } from 'react';
 import { ENTROPY_ARRAY_MAX_SIZE, CIRCUITS } from './constants';
