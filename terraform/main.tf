@@ -57,7 +57,7 @@ variable "COMMITHASH" {
 
 resource "aws_instance" "mpc" {
   ami           = "ami-064736ff8301af3ee"
-  instance_type = "t3.large"
+  instance_type = "m6i.xlarge"
   user_data_base64 = base64encode("${templatefile("server.sh", {
       access_key_secret = var.AWS_SECRET_ACCESS_KEY
       access_key_id = var.AWS_ACCESS_KEY_ID

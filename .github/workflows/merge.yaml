@@ -33,6 +33,18 @@ jobs:
           workspace: mpc
           auto_approve: true
 
+      - name: Set up S3cmd cli tool
+        uses: s3-actions/s3cmd@v1.2.0
+        with:
+          provider: aws # default is linode
+          region: 'eu-west-2'
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Copy first contribution to new branch folder
+        run: |
+          s3cmd sync circuits/* s3://mpc-main --exclude="*.r1cs" --exclude="*.ptau"
+
   browser:
     strategy:
       matrix:
