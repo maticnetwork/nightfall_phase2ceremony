@@ -3,11 +3,12 @@
 const { Command } = require('commander');
 const program = new Command();
 const promptly = require('promptly');
-const apply = require('./src/apply');
+const applyContrib = require('./src/apply');
 const branchName = require('current-git-branch');
+const chalk = require('chalk');
 let circuits = ['deposit', 'burn', 'tokenise', 'transfer', 'withdraw'];
 
-program.name('beacon').description('CLI').version('0.8.0');
+program.description('CLI').version('0.8.0');
 
 program
   .description('Beacon')
@@ -23,7 +24,15 @@ program
     console.log('Applying hash', beaconHash);
     console.log('Contributing to circuits:', circuits);
 
-    await apply({ type: 'beacon', name: 'beacon', contribData: beaconHash, branch, circuits });
+    for (const circuit of circuits) {
+      await applyContrib({
+        circuit,
+        contribData: beaconHash,
+        branch,
+      });
+    }
+    console.log(chalk.bgGreen('Thank you for your contribution!'));
+    process.exit(0);
   });
 
 program.parse();

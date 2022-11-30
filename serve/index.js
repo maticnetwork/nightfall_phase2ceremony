@@ -2,7 +2,10 @@
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
-import upload from './routes/upload.js';
+import morgan from 'morgan';
+import contribution from './routes/contribution.js';
+import beacon from './routes/beacon.js';
+import cors from 'cors';
 
 const app = express();
 
@@ -11,19 +14,16 @@ app.use(
     createParentPath: true,
   }),
 );
+app.use(morgan('dev'));
 
 app.use(express.json());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+app.use(cors());
 
-app.use('/', upload);
-
+app.use('/contribution', contribution);
+app.use('/beacon', beacon);
 app.get('/healthcheck', (req, res) => {
   res.json({ status: 'Running!' }).status(200);
 });

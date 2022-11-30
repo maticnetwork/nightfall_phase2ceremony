@@ -4,17 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "contribute": "node contribute.js",
-    "ceremony": "run-func src/ceremony.js ceremony",
-    "contribute_old": "run-func src/contribution.js contribute",
-    "verify": "run-func src/verify.js verify",
-    "beacon": "run-func src/beacon.js beacon",
-    "test": "mocha --timeout 0 test/index.js",
+    "dev": "NODE_ENV=development node beacon.js",
+    "start": "NODE_ENV=production node beacon.js",
     "lint": "eslint . --ext js,mjs,jsx,ts,tsx"
-  },
-  "bin": {
-    "contribute": "contribute.js",
-    "beacon": "beacon.js"
   },
   "author": "",
   "license": "ISC",

@@ -55,6 +55,10 @@ variable "COMMITHASH" {
   type = string
 }
 
+variable "AUTH_KEY" {
+  type = string
+}
+
 resource "aws_instance" "mpc" {
   ami           = "ami-064736ff8301af3ee"
   instance_type = "m6i.xlarge"
@@ -63,6 +67,7 @@ resource "aws_instance" "mpc" {
       access_key_id = var.AWS_ACCESS_KEY_ID
       git_branch = var.BRANCH
       commit_hash = var.COMMITHASH
+      auth_key = var.AUTH_KEY
   })}")
   user_data_replace_on_change = true
   key_name = "ssh" # Remove if not needed!
