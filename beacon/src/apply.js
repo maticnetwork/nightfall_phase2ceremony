@@ -1,11 +1,14 @@
 const { zKey } = require('snarkjs');
-const axios = require('axios').default;
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 const FormData = require('form-data');
+const chalk = require('chalk');
 const Promise = require('promise');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-async function applyContrib({ circuit, type, name, contribData, branch, NODE_ENV }) {
+module.exports = async function applyContrib({ circuit, contribData, branch, NODE_ENV }) {
   return new Promise((resolve, reject) => {
     try {
       s3.makeUnauthenticatedRequest(
@@ -21,24 +24,19 @@ async function applyContrib({ circuit, type, name, contribData, branch, NODE_ENV
             { Bucket: `mpc-${branch}`, Key: `${bucketData[0].Key}` },
 
             async (err, data) => {
-              let res;
-              const o = {
-                type: 'mem',
-                data: null,
-                fileName: `contribution_${circuit}.zkey`,
-              };
-
-              res = await zKey.contribute(data.Body, o, name, contribData);
-              o.file = o.data.buffer.slice(
-                o.data.byteOffset,
-                o.data.byteLength + o.data.byteOffset,
+              let res = await zKey.beacon(
+                data.Body,
+                `beacon_${circuit}.zkey`,
+                'beacon',
+                contribData,
+                10,
               );
-
               if (!res) throw Error('Invalid inputs');
 
               const formData = new FormData();
-              formData.append('contribution', new Blob([o.file]));
-              formData.append('name', name);
+              const dataPath = path.join(__dirname, `../beacon_${circuit}.zkey`);
+              formData.append('contribution', fs.createReadStream(dataPath));
+              formData.append('name', 'beacon');
               formData.append('circuit', circuit);
 
               let url;
@@ -57,6 +55,8 @@ async function applyContrib({ circuit, type, name, contribData, branch, NODE_ENV
               };
 
               const call = await axios(config);
+              console.log(chalk.green(`Applied beacon to circuit ${circuit}`));
+
               resolve(call.data.verification);
               return call.data.verification;
             },
@@ -64,9 +64,8 @@ async function applyContrib({ circuit, type, name, contribData, branch, NODE_ENV
         },
       );
     } catch (error) {
+      console.log(chalk.red(error));
       reject(error);
     }
   });
-}
-
-window.applyContrib = applyContrib;
+};
