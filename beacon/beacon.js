@@ -8,7 +8,7 @@ const branchName = require('current-git-branch');
 const chalk = require('chalk');
 let circuits = ['deposit', 'burn', 'tokenise', 'transfer', 'withdraw'];
 
-program.name('beacon').description('CLI').version('0.8.0');
+program.description('CLI').version('0.8.0');
 
 program
   .description('Beacon')
@@ -24,13 +24,11 @@ program
     console.log('Applying hash', beaconHash);
     console.log('Contributing to circuits:', circuits);
 
-    const NODE_ENV = branch === 'main' ? 'production' : 'development';
     for (const circuit of circuits) {
       await applyContrib({
         circuit,
         contribData: beaconHash,
         branch,
-        NODE_ENV,
       });
     }
     console.log(chalk.bgGreen('Thank you for your contribution!'));

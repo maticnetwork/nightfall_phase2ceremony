@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "NODE_ENV=development node beacon.js",
+    "start": "NODE_ENV=production node beacon.js",
     "lint": "eslint . --ext js,mjs,jsx,ts,tsx"
-  },
-  "bin": {
-    "beacon": "beacon.js"
   },
   "author": "",
   "license": "ISC",
