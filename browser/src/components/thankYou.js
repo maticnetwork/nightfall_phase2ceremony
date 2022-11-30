@@ -11,7 +11,7 @@ export default function ThankYou({ circuits, circuitsSubmitted, verifications })
         <Typography paragraph align="center" variant="h5" marginTop={'4%'}>
           Thank you for your contribution!
         </Typography>
-        <Typography paragraph align="center" variant="body" marginTop={'4%'}>
+        {/* <Typography paragraph align="center" variant="body" marginTop={'4%'}>
           More details about your contribution:
         </Typography>
         {circuits.map(circuit => {
@@ -34,7 +34,7 @@ export default function ThankYou({ circuits, circuitsSubmitted, verifications })
               </AccordionDetails>
             </Accordion>
           );
-        })}
+        })} */}
       </>
     );
   }

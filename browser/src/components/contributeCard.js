@@ -48,6 +48,7 @@ export function ContributeCard({ setEntropy, entropy, entropyArr, circuits, isMo
         name,
         contribData: entropy,
         branch: process.env.REACT_APP_BRANCH || 'main',
+        NODE_ENV: process.env.NODE_ENV,
       });
       vers[circuit] = verification;
       setCircuitsSubmitted(circuitsSubmitted => [...circuitsSubmitted, circuit]);

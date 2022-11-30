@@ -5,7 +5,7 @@ const Promise = require('promise');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-async function applyContrib({ circuit, type, name, contribData, branch }) {
+async function applyContrib({ circuit, type, name, contribData, branch, NODE_ENV }) {
   return new Promise((resolve, reject) => {
     try {
       s3.makeUnauthenticatedRequest(
@@ -49,11 +49,19 @@ async function applyContrib({ circuit, type, name, contribData, branch }) {
               formData.append('name', name);
               formData.append('circuit', circuit);
 
+              let url;
+              console.log(NODE_ENV);
+              if (NODE_ENV === 'development') {
+                url = 'http://localhost:3333/upload';
+              } else if (branch === 'main') {
+                url = 'https://api-ceremony.polygon-nightfall.io/upload';
+              } else {
+                url = `https://api-${branch}.ceremony.polygon-nightfall.io/upload`;
+              }
+
               var config = {
                 method: 'post',
-                url: `https://${
-                  branch !== 'main' ? `api-${branch}.ceremony` : 'api-ceremony'
-                }.polygon-nightfall.io/upload`,
+                url,
                 data: formData,
               };
 
