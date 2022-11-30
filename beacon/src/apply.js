@@ -43,7 +43,7 @@ module.exports = async function applyContrib({ circuit, name, contribData, branc
     method: 'POST',
     url: `${url}/beacon`,
     data: formData,
-    headers: { 'x-app-token': process.env.AUTH_TOKEN },
+    headers: { 'x-app-token': process.env.AUTH_KEY },
   });
   console.log(chalk.green(`Applied beacon to circuit ${circuit}`));
   return call.data.verification;

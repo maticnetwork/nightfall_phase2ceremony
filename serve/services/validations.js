@@ -19,9 +19,7 @@ class VerifyLog {
 
 export async function beaconAuth(req, res, next) {
   const token = req.headers['x-app-token'];
-  console.log(token);
-  console.log(process.env.AUTH_TOKEN);
-  if (token === process.env.AUTH_TOKEN) return next();
+  if (token && process.env.AUTH_KEY && token === process.env.AUTH_KEY) return next();
   return res.status(401).send('Unauthorized');
 }
 

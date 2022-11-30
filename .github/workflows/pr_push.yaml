@@ -28,7 +28,7 @@ jobs:
           variables: |
             BRANCH = "${{ github.head_ref }}"
             COMMITHASH = "${{ github.sha }}"
-            AUTH_KEY = ${{ secrets.AUTH_KEY }}
+            AUTH_KEY = "${{ secrets.AUTH_KEY }}"
           workspace: ${{ github.head_ref }}
           path: terraform
           auto_approve: true

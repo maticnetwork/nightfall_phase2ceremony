@@ -65,6 +65,10 @@ resource "aws_lb_target_group" "tg" {
   protocol = "HTTP"
   protocol_version = "HTTP1"
   vpc_id   = data.aws_vpc.default.id
+
+  health_check {
+    path = "/healthcheck"
+  }
 }
 
 resource "aws_lb_target_group_attachment" "tg-attachment" {
