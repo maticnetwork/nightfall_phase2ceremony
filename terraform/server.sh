@@ -15,5 +15,8 @@ cd nightfall_phase2ceremony/serve
 nvm install
 nvm use
 
+## Dependencies...
 npm i
+
+## Starting app like a boss
 npm run start

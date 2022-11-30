@@ -15,29 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up S3cmd cli tool
-        uses: s3-actions/s3cmd@v1.2.0
-        with:
-          provider: aws # default is linode
-          region: 'eu-west-2'
-          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Recursively remove this s3 bucket folder
-        run: |
-          s3cmd rm --recursive --force s3://mpc2/${{ github.head_ref }}/
-
-      - name: Copy first contribution to new branch folder
-        run: |
-          s3cmd cp s3://mpc2/firstContrib/burn_0000.zkey s3://mpc2/${{ github.head_ref }}/burn/burn_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/tokenise_0000.zkey s3://mpc2/${{ github.head_ref }}/tokenise/tokenise_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/transfer_0000.zkey s3://mpc2/${{ github.head_ref }}/transfer/transfer_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/withdraw_0000.zkey s3://mpc2/${{ github.head_ref }}/withdraw/withdraw_0000.zkey
-          s3cmd cp s3://mpc2/firstContrib/deposit_0000.zkey s3://mpc2/${{ github.head_ref }}/deposit/deposit_0000.zkey
-
       - name: Create branch workspace
         uses: dflook/terraform-new-workspace@v1
         with:
+          path: terraform
           workspace: ${{ github.head_ref }}
 
       - name: Deploy infrastrucutre
@@ -48,4 +29,72 @@ jobs:
             BRANCH = "${{ github.head_ref }}"
             COMMITHASH = "${{ github.sha }}"
           workspace: ${{ github.head_ref }}
+          path: terraform
           auto_approve: true
+
+      - name: Set up S3cmd cli tool
+        uses: s3-actions/s3cmd@v1.2.0
+        with:
+          provider: aws # default is linode
+          region: 'eu-west-2'
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Copy first contribution to new branch folder
+        run: |
+          s3cmd sync circuits/* s3://mpc-${{ github.head_ref }} --exclude="*.r1cs" --exclude="*.ptau"
+
+  browser:
+    strategy:
+      matrix:
+        node-version: [16.x]
+    needs: terraform
+    runs-on: ubuntu-latest
+    name: Build and deploy browser
+    env:
+      TERRAFORM_CLOUD_TOKENS: app.terraform.io=${{ secrets.TF_API_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: browser/package-lock.json
+      - run: npm ci
+        working-directory: browser
+      - run: |
+          npm i browserify
+      - run: |
+          npm run build
+        env:
+          REACT_APP_BRANCH: ${{ github.head_ref }}
+        working-directory: browser
+      - name: Set up S3cmd cli tool
+        uses: s3-actions/s3cmd@v1.2.0
+        with:
+          provider: aws # default is linode
+          region: 'eu-west-2'
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Copy first contribution to new branch folder
+        run: |
+          s3cmd sync build/* s3://mpc-${{ github.head_ref }}/website/
+        working-directory: browser
+
+      - name: Get outputs
+        uses: dflook/terraform-output@v1
+        id: tf-outputs
+        with:
+          path: terraform
+          workspace: ${{ github.head_ref }}
+
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ steps.tf-outputs.outputs.distribution_id }}
+          PATHS: '/*'
+          AWS_REGION: 'eu-west-3'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -74,17 +74,3 @@ resource "aws_instance" "mpc" {
     "Name" = "${var.BRANCH}"
   }
 }
-
-resource "aws_route53_record" "www" {
-  zone_id = "Z05413741GQORWY8FTPNF"
-  name    = "%{ if var.BRANCH != "main" }${var.BRANCH}.ceremony.polygon-nightfall.io%{ else }ceremony.polygon-nightfall.io%{ endif }"
-  type    = "A"
-  ttl     = 300
-  records = [aws_instance.mpc.public_ip]
-}
-
-
-output "instance_dns" {
-  description = "The public ip"
-  value       = aws_route53_record.www.name
-}

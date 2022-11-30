@@ -12,7 +12,7 @@ const validator = createValidator();
 const router = express.Router();
 
 const uploadSchema = joi.object({
-  name: joi.string().alphanum().min(3).max(20).required(),
+  name: joi.string().alphanum().max(40).required(),
   circuit: joi
     .string()
     .valid('deposit', 'withdraw', 'transfer', 'transform', 'tokenise', 'burn')
@@ -33,26 +33,23 @@ class VerifyLog {
   error = () => console.error;
 }
 
-async function validateContribution(req, res, next) {
+async function validateContribution({ circuit, contribData }) {
   try {
-    const { circuit } = req.body;
-
     const vl = new VerifyLog();
-    const r = await zKey.verifyFromR1cs(
+    await zKey.verifyFromR1cs(
       { type: 'file', fileName: `../circuits/${circuit}/${circuit}.r1cs` },
       { type: 'file', fileName: `../circuits/${circuit}/${circuit}.ptau` },
-      req.files.contribution.data,
+      contribData,
       vl,
     );
-    res.locals = vl.verifyLog;
-    next();
+    return vl;
   } catch (error) {
     console.log(error);
-    next(error);
+    throw new Error(error);
   }
 }
 
-router.post('/upload', validator.body(uploadSchema), validateContribution, async (req, res) => {
+router.post('/upload', validator.body(uploadSchema), async (req, res) => {
   try {
     const { name, circuit } = req.body;
     if (!req.files) {
@@ -61,11 +58,21 @@ router.post('/upload', validator.body(uploadSchema), validateContribution, async
         message: 'No file uploaded',
       });
     } else {
-      //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
       let contrib = req.files.contribution;
+
+      //send response immediately so the user can start working on the next circuit
+      res.send({
+        status: true,
+        message: 'Thank you for your contribution!',
+        verification: res.locals,
+      });
+
+      // THEN verify it before uploading. The verification logs are unused for now :(
+      const vl = await validateContribution({ circuit, contribData: contrib.data });
+      console.log(vl);
       const uploadParams = {
-        Bucket: `mpc2`,
-        Key: `${branchName()}/${circuit}/${name}.zkey`,
+        Bucket: `mpc-${branchName()}`,
+        Key: `${circuit}/${name}.zkey`,
         Body: contrib.data,
       };
 
@@ -76,13 +83,6 @@ router.post('/upload', validator.body(uploadSchema), validateContribution, async
         if (data) {
           console.log('Upload Success', data.Location);
         }
-      });
-
-      //send response
-      res.send({
-        status: true,
-        message: 'Thank you for your contribution!',
-        verification: res.locals,
       });
     }
   } catch (err) {
