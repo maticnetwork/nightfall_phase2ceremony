@@ -30,7 +30,7 @@ jobs:
           variables: |
             BRANCH = "main"
             COMMITHASH = "${{ github.sha }}"
-            AUTH_KEY = ${{ secrets.BEACON_AUTH_KEY }}
+            AUTH_KEY = "${{ secrets.BEACON_AUTH_KEY }}"
           workspace: mpc
           auto_approve: true
 

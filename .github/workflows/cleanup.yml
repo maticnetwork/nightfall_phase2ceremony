@@ -29,7 +29,7 @@ jobs:
       - name: Recursively remove this s3 bucket folder
         if: github.event_name == 'pull_request'
         run: |
-          s3cmd rm --recursive --force s3://mpc2/${{ github.head_ref }}/
+          s3cmd rm --recursive --force s3://mpc-${{ github.head_ref }}/
 
       - name: terraform destroy
         uses: dflook/terraform-destroy-workspace@v1
@@ -45,7 +45,7 @@ jobs:
       - name: Recursively remove this s3 bucket folder
         if: github.event_name == 'workflow_dispatch'
         run: |
-          s3cmd rm --recursive --force s3://mpc2/${{ github.ref_name }}/
+          s3cmd rm --recursive --force s3://mpc-${{ github.ref_name }}/
 
       - name: terraform destroy
         uses: dflook/terraform-destroy-workspace@v1
