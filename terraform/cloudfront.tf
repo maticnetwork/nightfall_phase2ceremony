@@ -34,9 +34,6 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
 }
 
-output "distribution_id" {
-    value = aws_cloudfront_distribution.distribution.id
-}
 
 resource "aws_route53_record" "www" {
   zone_id = "Z05413741GQORWY8FTPNF"
