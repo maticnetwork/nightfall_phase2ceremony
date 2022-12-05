@@ -3,12 +3,12 @@ output "distribution_id" {
     value = aws_cloudfront_distribution.distribution.id
 }
 
-output "address" {
+output "frontend_address" {
   description = "The frontend address"
   value       = aws_route53_record.www.name
 }
 
-output "address" {
+output "backend_address" {
   description = "The backend address"
   value       = aws_route53_record.api.name
 }
