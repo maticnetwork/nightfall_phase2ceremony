@@ -1,22 +1,6 @@
 
-data "aws_vpc" "default" {
-  default = true
-} 
-
-data "aws_subnets" "example" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
-data "aws_subnet" "example" {
-  for_each = toset(data.aws_subnets.example.ids)
-  id       = each.value
-}
-
-
 resource "aws_security_group" "lb" {
+  vpc_id = aws_vpc.main.id
   egress = [
     {
       cidr_blocks      = [ "0.0.0.0/0", ]
@@ -50,7 +34,7 @@ resource "aws_lb" "lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.id]
-  subnets            = [for subnet in data.aws_subnet.example : subnet.id]
+  subnets            = aws_subnet.public[*].id
 
   enable_deletion_protection = false
 
@@ -64,7 +48,7 @@ resource "aws_lb_target_group" "tg" {
   port     = 3333
   protocol = "HTTP"
   protocol_version = "HTTP1"
-  vpc_id   = data.aws_vpc.default.id
+  vpc_id   = aws_vpc.main.id
 
   health_check {
     path = "/healthcheck"
@@ -72,8 +56,9 @@ resource "aws_lb_target_group" "tg" {
 }
 
 resource "aws_lb_target_group_attachment" "tg-attachment" {
+  count = length(var.public_subnets)
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = aws_instance.mpc.id
+  target_id        = aws_instance.mpc[count.index].id
   port             = 3333
 }
 

@@ -8,6 +8,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "main" {
+  vpc_id = aws_vpc.main.id
   egress = [
     {
       cidr_blocks      = [ "0.0.0.0/0", ]
@@ -47,19 +48,9 @@ resource "aws_security_group" "main" {
   ]
 }
 
-variable "BRANCH" {
-  type = string
-}
-
-variable "COMMITHASH" {
-  type = string
-}
-
-variable "AUTH_KEY" {
-  type = string
-}
 
 resource "aws_instance" "mpc" {
+  count = length(var.public_subnets)
   ami           = "ami-064736ff8301af3ee"
   instance_type = "m6i.xlarge"
   user_data_base64 = base64encode("${templatefile("server.sh", {
@@ -74,8 +65,10 @@ resource "aws_instance" "mpc" {
   vpc_security_group_ids = [aws_security_group.main.id]
   depends_on = [ aws_security_group.main ]
   associate_public_ip_address = true
+  subnet_id = aws_subnet.public[count.index].id
 
   tags = {
     "Name" = "${var.BRANCH}"
   }
 }
+
