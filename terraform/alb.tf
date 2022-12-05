@@ -91,7 +91,6 @@ resource "aws_lb_listener" "listener" {
 }
 
 
-
 resource "aws_route53_record" "api" {
   zone_id = "Z05413741GQORWY8FTPNF"
   name    = "%{ if var.BRANCH != "main" }api-${var.BRANCH}.ceremony.polygon-nightfall.io%{ else }api-ceremony.polygon-nightfall.io%{ endif }"
@@ -103,10 +102,3 @@ resource "aws_route53_record" "api" {
     evaluate_target_health = false
   }
 }
-
-
-output "instance_dns" {
-  description = "The public ip"
-  value       = aws_route53_record.www.name
-}
-
