@@ -1,14 +1,16 @@
-variable "BRANCH" {
-  type = string
-}
+variable "BRANCH" {}
+variable "COMMITHASH" {}
+variable "AUTH_KEY" {}
 
-variable "COMMITHASH" {
-  type = string
-}
+variable "CERTIFICATE_ARN_BACKEND_MAIN" {}
+variable "CERTIFICATE_ARN_BACKEND_DEV" {}
+variable "CERTIFICATE_ARN_FRONTEND_MAIN" {}
+variable "CERTIFICATE_ARN_FRONTEND_DEV" {}
+variable "ROUTE_53_ZONE_ID" {}
 
-variable "AUTH_KEY" {
-  type = string
-}
+variable "AWS_SECRET_ACCESS_KEY" {}
+variable "AWS_ACCESS_KEY_ID" {}
+
 
 variable "availability_zone" {
   description = "a comma-separated list of availability zones, defaults to all AZ of the region, if set to something other than the defaults, both private_subnets and public_subnets have to be defined as well"

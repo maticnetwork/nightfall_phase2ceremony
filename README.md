@@ -72,7 +72,6 @@ You also need to set up `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in Terra
 # TODO
 
 - Make a better frontend, this one looks like my one-year-old twins christmas drawing
-- Put some network infrastructure on like VPC, IGW, subnets, etc so it's completely self-contained
 - Make a ticketing system to allow people to report they're contributing, and allow others to wait
   (as contributions need to be synchronous)
 - Have proper unit and e2e testing

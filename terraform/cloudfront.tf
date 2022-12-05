@@ -22,7 +22,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = var.BRANCH == "main" ? "arn:aws:acm:us-east-1:950711068211:certificate/2ac0b0ce-2bc8-4e9c-8b01-4e292d5b7b57" : "arn:aws:acm:us-east-1:950711068211:certificate/efc3c9c7-f5bd-4506-aa9a-99e32675cd43"
+    acm_certificate_arn = var.BRANCH == "main" ? var.CERTIFICATE_ARN_FRONTEND_MAIN : var.CERTIFICATE_ARN_FRONTEND_DEV
     ssl_support_method = "sni-only"
   }
 
@@ -36,7 +36,7 @@ resource "aws_cloudfront_distribution" "distribution" {
 
 
 resource "aws_route53_record" "www" {
-  zone_id = "Z05413741GQORWY8FTPNF"
+  zone_id = var.ROUTE_53_ZONE_ID
   name    = "%{ if var.BRANCH != "main" }${var.BRANCH}.ceremony.polygon-nightfall.io%{ else }ceremony.polygon-nightfall.io%{ endif }"
   type    = "A"
   alias {
