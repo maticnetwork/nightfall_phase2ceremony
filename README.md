@@ -50,24 +50,33 @@ As mentioned, Github Actions is the CI/CD pipeline that will do the following:
 
 # How can I clone this
 
-As you can see on the `terraform` folder, a lot of things are assumed right now. Like the ACM
-certificate ARNs, route53 hosted zones, and cloudfront distribution zones. It also assumes you can
-use the default VPC and subnets.
+As a requirement, you should have already configured:
 
-However, and while we will work hard to make this infrastructure as plug-and-play, you can still
-clone this repo and make changes to these values, providing your own and deploying this MPC as
-yours.
+- Some ACM certificates in AWS certificate manager
+- A Route53 zoneID
 
-Just keep in mind the following needed secrets:
+You need to set up the following needed secrets in Github:
 
 - `AUTH_KEY` - Some random string (it can be anything, really) to protect your beacon routes on the
   backend. This is a work in progress.
-- `AWS_ACCESS_KEY_ID` - Obviously you need to provide an AWS access key for your own AWS environment
+- `AWS_ACCESS_KEY_ID` - You need to provide an AWS access key for your own AWS environment, so
+  github can invalidate your cloudfront cache
 - `AWS_SECRET_ACCESS_KEY` - Same thing
-- `TF_API_TOKEN` - The terraform cloud token
+- `TF_API_TOKEN` - The terraform cloud token, so the terraform process runs there
 
-You also need to set up `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in Terraform cloud as
-`variable sets`.
+In terraform cloud, you need the following variables in "variable sets":
+
+- `AWS_ACCESS_KEY_ID` - So terraform can deploy your infrastructure
+- `AWS_SECRET_ACCESS_KEY` - Same
+- `CERTIFICATE_ARN_BACKEND_DEV` - The certificate ARN of your backend certificate, for the
+  development branches (like api-<your-branch-name>.ceremony.polygon-nightfall.io)
+- `CERTIFICATE_ARN_BACKEND_MAIN` - Same, for the main branch (like
+  api-ceremony.polygon-nightfall.io)
+- `CERTIFICATE_ARN_FRONTEND_DEV` - Same thing, for frontend (like
+  <your-branch-name>.ceremony.polygon-nightfall.io)
+- `CERTIFICATE_ARN_FRONTEND_MAIN` - Same thing, for the main frontend ranch (like
+  ceremony.polygon-nightfall.io)
+- `ROUTE_53_ZONE_ID` - The zone ID you want to use for your route53 records
 
 # TODO
 
