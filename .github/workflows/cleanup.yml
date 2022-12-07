@@ -38,6 +38,7 @@ jobs:
           variables: |
             BRANCH = "${{ github.head_ref }}"
             COMMITHASH = "${{ github.sha }}"
+            AUTH_KEY = "${{ secrets.AUTH_KEY }}"
           path: terraform
           workspace: ${{ github.head_ref }}
 
@@ -54,5 +55,6 @@ jobs:
           variables: |
             BRANCH = "${{ github.ref_name }}"
             COMMITHASH = "${{ github.sha }}"
+            AUTH_KEY = "${{ secrets.AUTH_KEY }}"
           path: terraform
           workspace: ${{ github.ref_name }}
