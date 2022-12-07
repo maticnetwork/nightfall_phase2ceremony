@@ -1,22 +1,6 @@
 
-data "aws_vpc" "default" {
-  default = true
-} 
-
-data "aws_subnets" "example" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
-data "aws_subnet" "example" {
-  for_each = toset(data.aws_subnets.example.ids)
-  id       = each.value
-}
-
-
 resource "aws_security_group" "lb" {
+  vpc_id = aws_vpc.main.id
   egress = [
     {
       cidr_blocks      = [ "0.0.0.0/0", ]
@@ -50,7 +34,7 @@ resource "aws_lb" "lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.id]
-  subnets            = [for subnet in data.aws_subnet.example : subnet.id]
+  subnets            = aws_subnet.public[*].id
 
   enable_deletion_protection = false
 
@@ -64,7 +48,7 @@ resource "aws_lb_target_group" "tg" {
   port     = 3333
   protocol = "HTTP"
   protocol_version = "HTTP1"
-  vpc_id   = data.aws_vpc.default.id
+  vpc_id   = aws_vpc.main.id
 
   health_check {
     path = "/healthcheck"
@@ -72,8 +56,9 @@ resource "aws_lb_target_group" "tg" {
 }
 
 resource "aws_lb_target_group_attachment" "tg-attachment" {
+  count = length(var.public_subnets)
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = aws_instance.mpc.id
+  target_id        = aws_instance.mpc[count.index].id
   port             = 3333
 }
 
@@ -82,14 +67,13 @@ resource "aws_lb_listener" "listener" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.BRANCH == "main" ? "arn:aws:acm:eu-west-3:950711068211:certificate/2ec392a8-4e0c-4edc-a050-9b673cebcf88" : "arn:aws:acm:eu-west-3:950711068211:certificate/b26d35d0-219d-4883-91b5-686cdd2d5953"
+  certificate_arn   = var.BRANCH == "main" ? var.CERTIFICATE_ARN_BACKEND_MAIN : var.CERTIFICATE_ARN_BACKEND_DEV
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
   }
 }
-
 
 
 resource "aws_route53_record" "api" {
@@ -103,10 +87,3 @@ resource "aws_route53_record" "api" {
     evaluate_target_health = false
   }
 }
-
-
-output "instance_dns" {
-  description = "The public ip"
-  value       = aws_route53_record.www.name
-}
-
