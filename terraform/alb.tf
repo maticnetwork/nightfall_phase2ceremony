@@ -27,6 +27,10 @@ resource "aws_security_group" "lb" {
      to_port          = 443
    }
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb" "lb" {
