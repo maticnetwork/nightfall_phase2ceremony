@@ -27,6 +27,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "browserify public/apply.js -p esmify -o public/bundles.js && react-scripts start",
     "start": "browserify public/apply.js -p esmify -o public/bundles.js && REACT_APP_BRANCH=`git rev-parse --abbrev-ref HEAD` react-scripts start",
     "build": "browserify public/apply.js -p esmify -o public/bundles.js && react-scripts build",
     "test": "react-scripts test",

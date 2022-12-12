@@ -6,10 +6,12 @@ async function applyContrib({ circuit, name, contribData, branch, NODE_ENV }) {
   let url;
   if (NODE_ENV === 'development') {
     url = 'http://localhost:3333/contribution';
-  } else if (branch !== 'main') {
-    url = `https://api-${branch}.ceremony.polygon-nightfall.io/contribution`;
   } else {
-    url = 'https://api-ceremony.polygon-nightfall.io/contribution';
+    if (branch !== 'main') {
+      url = `https://api-${branch}.ceremony.polygon-nightfall.io/contribution`;
+    } else {
+      url = 'https://api-ceremony.polygon-nightfall.io/contribution';
+    }
   }
 
   const o = {

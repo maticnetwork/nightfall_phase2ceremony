@@ -6,9 +6,9 @@ import morgan from 'morgan';
 import contribution from './routes/contribution.js';
 import beacon from './routes/beacon.js';
 import cors from 'cors';
+import { WebSocketServer } from 'ws';
 
 const app = express();
-
 app.use(
   fileUpload({
     createParentPath: true,
@@ -29,3 +29,12 @@ app.get('/healthcheck', (req, res) => {
 });
 
 app.listen(3333);
+
+const wss = new WebSocketServer({ port: 3334 });
+wss.on('connection', function connection(ws) {
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
+  });
+
+  ws.send('something');
+});

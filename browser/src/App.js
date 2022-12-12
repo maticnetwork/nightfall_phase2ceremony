@@ -1,7 +1,7 @@
 import './App.css';
 import { ContributeCard } from './components/contributeCard';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { ENTROPY_ARRAY_MAX_SIZE, CIRCUITS } from './constants';
 
 const entropyArr = [];
@@ -11,6 +11,21 @@ function App() {
   const [doneCapturing, setDoneCapturing] = useState(false);
   const [entropy, setEntropy] = useState(0);
   const isMobile = window.innerWidth < 1024;
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:3334');
+    let timerId = 0;
+
+    ws.onopen = event => {
+      console.log('open');
+
+      timerId = setInterval(() => {
+        ws.send('hello');
+      }, 1000);
+    };
+
+    return clearInterval(timerId);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = event => {
