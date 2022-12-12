@@ -27,6 +27,10 @@ resource "aws_security_group" "lb" {
      to_port          = 443
    }
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb" "lb" {
@@ -52,6 +56,10 @@ resource "aws_lb_target_group" "tg" {
 
   health_check {
     path = "/healthcheck"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
