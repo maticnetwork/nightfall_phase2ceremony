@@ -28,6 +28,7 @@ jobs:
       # If pull request, use head_ref
       - name: Recursively remove this s3 bucket folder
         if: github.event_name == 'pull_request'
+        continue-on-error: true
         run: |
           s3cmd rm --recursive --force s3://mpc-${{ github.head_ref }}/
 
@@ -44,6 +45,7 @@ jobs:
       # If workflow dispatch, use ref_name
       - name: Recursively remove this s3 bucket folder
         if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: |
           s3cmd rm --recursive --force s3://mpc-${{ github.ref_name }}/
 
