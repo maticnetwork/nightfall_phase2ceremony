@@ -9,6 +9,7 @@ import EntropyProgress from './entropyProgress';
 import Buttons from './cardButtons';
 import SubmissionProgress from './submissionProgress';
 import ThankYou from './thankYou';
+import { useEffect } from 'react';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,6 +29,21 @@ export function ContributeCard({ setEntropy, entropy, entropyArr, circuits, isMo
 
   const [verifications, setVerifications] = React.useState();
 
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:3334');
+    let timerId = 0;
+
+    ws.onopen = event => {
+      console.log('open');
+
+      timerId = setInterval(() => {
+        ws.send('hellos');
+      }, 1000);
+    };
+
+    return clearInterval(timerId);
+  }, []);
+
   const haikunator = new Haikunator({
     defaults: {
       delimiter: '',
@@ -36,25 +52,30 @@ export function ContributeCard({ setEntropy, entropy, entropyArr, circuits, isMo
   });
 
   async function applyContrib() {
-    setSubmitted(true);
-    console.log('START: ', new Date());
+    const ws = new WebSocket('ws://localhost:3334');
+    ws.onopen = async event => {
+      setSubmitted(true);
+      console.log('START: ', new Date());
 
-    const vers = {};
-    for (const circuit of circuits) {
-      if (!name) name = haikunator.haikunate();
-      const verification = await window.applyContrib({
-        circuit,
-        type: 'contribution',
-        name,
-        contribData: entropy,
-        branch: process.env.REACT_APP_BRANCH || 'main',
-        NODE_ENV: process.env.NODE_ENV,
-      });
-      vers[circuit] = verification;
-      setCircuitsSubmitted(circuitsSubmitted => [...circuitsSubmitted, circuit]);
-    }
-    setVerifications(vers);
-    console.log('END: ', new Date());
+      const vers = {};
+      for (const circuit of circuits) {
+        if (!name) name = haikunator.haikunate();
+        ws.send(JSON.stringify({ circuit, state: 'contributing' }));
+        const verification = await window.applyContrib({
+          circuit,
+          type: 'contribution',
+          name,
+          contribData: entropy,
+          branch: process.env.REACT_APP_BRANCH || 'main',
+          NODE_ENV: process.env.NODE_ENV,
+        });
+        vers[circuit] = verification;
+        ws.send(JSON.stringify({ circuit, state: 'submitted' }));
+        setCircuitsSubmitted(circuitsSubmitted => [...circuitsSubmitted, circuit]);
+      }
+      setVerifications(vers);
+      console.log('END: ', new Date());
+    };
   }
 
   return (
